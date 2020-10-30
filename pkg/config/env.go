@@ -4,7 +4,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/lightstar/goworld/pkg/errors"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 const (

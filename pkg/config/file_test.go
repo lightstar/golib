@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/goworld/pkg/config"
-	"github.com/lightstar/goworld/pkg/test/iotest"
+	"github.com/lightstar/golib/pkg/config"
+	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
 const testConfigPath = "../../test/config"

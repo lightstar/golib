@@ -3,7 +3,7 @@ package config
 import (
 	"github.com/pelletier/go-toml"
 
-	"github.com/lightstar/goworld/pkg/errors"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 // TOMLEncoder is an encoder that treats configuration data as toml.

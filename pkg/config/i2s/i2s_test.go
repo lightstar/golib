@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/goworld/pkg/config/i2s"
-	"github.com/lightstar/goworld/pkg/errors"
+	"github.com/lightstar/golib/pkg/config/i2s"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 // nolint: funlen // cases array is too long to pass that linter

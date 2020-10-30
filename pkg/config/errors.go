@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/lightstar/goworld/pkg/errors"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 var (

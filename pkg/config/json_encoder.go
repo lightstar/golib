@@ -3,7 +3,7 @@ package config
 import (
 	"encoding/json"
 
-	"github.com/lightstar/goworld/pkg/errors"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 // JSONEncoder is an encoder that treats configuration data as json.

@@ -3,7 +3,7 @@ package log
 import (
 	"go.uber.org/zap/zapcore"
 
-	"github.com/lightstar/goworld/pkg/config"
+	"github.com/lightstar/golib/pkg/config"
 )
 
 // Config structure with logger configuration. Shouldn't be created manually.

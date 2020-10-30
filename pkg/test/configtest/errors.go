@@ -1,6 +1,6 @@
 package configtest
 
-import "github.com/lightstar/goworld/pkg/errors"
+import "github.com/lightstar/golib/pkg/errors"
 
 var (
 	// ErrNoData error is returned when predefined configuration data is nil.

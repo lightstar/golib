@@ -12,7 +12,7 @@ linters-settings:
   gocyclo:
     min-complexity: 10
   goimports:
-    local-prefixes: github.com/lightstar/goworld
+    local-prefixes: github.com/lightstar/golib
   golint:
     min-confidence: 0
   govet:

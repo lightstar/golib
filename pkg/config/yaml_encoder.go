@@ -3,7 +3,7 @@ package config
 import (
 	"gopkg.in/yaml.v3"
 
-	"github.com/lightstar/goworld/pkg/errors"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 // YAMLEncoder is an encoder that treats configuration data as yaml.

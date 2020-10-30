@@ -1,6 +1,6 @@
 package i2s
 
-import "github.com/lightstar/goworld/pkg/errors"
+import "github.com/lightstar/golib/pkg/errors"
 
 var (
 	// ErrMismatchedTypes error is returned when types of input and output fields doesn't match.

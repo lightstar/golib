@@ -5,10 +5,10 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/goworld/pkg/config"
-	"github.com/lightstar/goworld/pkg/log"
-	"github.com/lightstar/goworld/pkg/test/configtest"
-	"github.com/lightstar/goworld/pkg/test/iotest"
+	"github.com/lightstar/golib/pkg/config"
+	"github.com/lightstar/golib/pkg/log"
+	"github.com/lightstar/golib/pkg/test/configtest"
+	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
 func TestLog(t *testing.T) {
@@ -31,7 +31,7 @@ func TestLog(t *testing.T) {
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test info message\n$`,
 		stdout.String())
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test error message\n`+
-		`github\.com/lightstar/goworld/pkg/log_test\.TestLog\n`, stderr.String())
+		`github\.com/lightstar/golib/pkg/log_test\.TestLog\n`, stderr.String())
 }
 
 func TestDebug(t *testing.T) {
@@ -55,7 +55,7 @@ func TestDebug(t *testing.T) {
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test debug message\n`+
 		`\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test info message\n$`, stdout.String())
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test error message\n`+
-		`github\.com/lightstar/goworld/pkg/log_test\.TestDebug\n`, stderr.String())
+		`github\.com/lightstar/golib/pkg/log_test\.TestDebug\n`, stderr.String())
 }
 
 func TestFatal(t *testing.T) {
@@ -77,7 +77,7 @@ func TestFatal(t *testing.T) {
 
 	require.Empty(t, stdout.String())
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test fatal message\n`+
-		`github\.com/lightstar/goworld/pkg/log_test\.TestFatal\..+\n`, stderr.String())
+		`github\.com/lightstar/golib/pkg/log_test\.TestFatal\..+\n`, stderr.String())
 }
 
 func TestConfig(t *testing.T) {
@@ -112,7 +112,7 @@ func TestConfig(t *testing.T) {
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test debug message\n`+
 		`\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test info message\n$`, stdout.String())
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test error message\n`+
-		`github\.com/lightstar/goworld/pkg/log_test\.TestConfig\n`, stderr.String())
+		`github\.com/lightstar/golib/pkg/log_test\.TestConfig\n`, stderr.String())
 }
 
 func TestConfigDefault(t *testing.T) {
@@ -140,7 +140,7 @@ func TestConfigDefault(t *testing.T) {
 
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] Test info message\n$`, stdout.String())
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] Test error message\n`+
-		`github\.com/lightstar/goworld/pkg/log_test\.TestConfigDefault\n`, stderr.String())
+		`github\.com/lightstar/golib/pkg/log_test\.TestConfigDefault\n`, stderr.String())
 }
 
 func TestConfigError(t *testing.T) {

@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/goworld/pkg/test/iotest"
-	"github.com/lightstar/goworld/pkg/util/fileutil"
+	"github.com/lightstar/golib/pkg/test/iotest"
+	"github.com/lightstar/golib/pkg/util/fileutil"
 )
 
 const testFilePath = "../../../test/file"

@@ -1,4 +1,4 @@
-module github.com/lightstar/goworld
+module github.com/lightstar/golib
 
 go 1.15
 

@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/goworld/pkg/errors"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 func TestError(t *testing.T) {
@@ -26,7 +26,7 @@ func TestFormat(t *testing.T) {
 	require.Equal(t, fmt.Sprintf("%s", err), "test")
 	require.Equal(t, fmt.Sprintf("%q", err), "\"test\"")
 
-	require.Regexp(t, `^test\ngithub.com/lightstar/goworld/pkg/errors_test.TestFormat\n\t`,
+	require.Regexp(t, `^test\ngithub.com/lightstar/golib/pkg/errors_test.TestFormat\n\t`,
 		fmt.Sprintf("%+v", err))
 }
 

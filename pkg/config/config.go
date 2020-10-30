@@ -23,7 +23,7 @@ package config
 import (
 	"strings"
 
-	"github.com/lightstar/goworld/pkg/config/i2s"
+	"github.com/lightstar/golib/pkg/config/i2s"
 )
 
 // Encoder type is a function used to convert source bytes into raw representation of configuration data.

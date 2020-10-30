@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/lightstar/goworld/pkg/errors"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 // These variables are used to support singleton pattern.

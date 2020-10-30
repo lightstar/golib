@@ -11,7 +11,7 @@ import (
 	"go.etcd.io/etcd/clientv3"
 	"go.uber.org/zap"
 
-	"github.com/lightstar/goworld/pkg/config"
+	"github.com/lightstar/golib/pkg/config"
 )
 
 const etcdKey = "sample_config"

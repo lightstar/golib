@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/goworld/pkg/config"
-	"github.com/lightstar/goworld/pkg/config/i2s"
-	"github.com/lightstar/goworld/pkg/errors"
+	"github.com/lightstar/golib/pkg/config"
+	"github.com/lightstar/golib/pkg/config/i2s"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 func TestConfig(t *testing.T) {
