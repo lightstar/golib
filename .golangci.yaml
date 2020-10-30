@@ -1,0 +1,92 @@
+linters-settings:
+  dupl:
+    threshold: 100
+  exhaustive:
+    default-signifies-exhaustive: true
+  funlen:
+    lines: 100
+    statements: 50
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  gocyclo:
+    min-complexity: 10
+  goimports:
+    local-prefixes: github.com/lightstar/goworld
+  golint:
+    min-confidence: 0
+  govet:
+    check-shadowing: true
+  lll:
+    line-length: 120
+    tab-width: 4
+  maligned:
+    suggest-new: true
+  misspell:
+    locale: US
+  nolintlint:
+    allow-unused: false
+    require-explanation: true
+    require-specific: true
+  wsl:
+    allow-cuddle-declarations: true
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - deadcode
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - exhaustive
+    - funlen
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - gocyclo
+    - gofmt
+    - goimports
+    - golint
+    - gomnd
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - interfacer
+    - lll
+    - misspell
+    - nakedret
+    - noctx
+    - nolintlint
+    - rowserrcheck
+    - scopelint
+    - staticcheck
+    - structcheck
+    - stylecheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - varcheck
+    - whitespace
+    - asciicheck
+    - gochecknoglobals
+    - gocognit
+    - godot
+    - godox
+    - maligned
+    - nestif
+    - prealloc
+    - testpackage
+    - wsl
+
+issues:
+  exclude-use-default: false
+  exclude:
+    - should have a package comment, unless it's in another file for this package
+    - Error return value of .((os\.)?std(out|err)\..*|.*Close|.*Flush|os\.Remove(All)?|.*print(f|ln)?|os\.(Un)?Setenv). is not checked
+    - Potential file inclusion via variable
+    - (G104|G307)

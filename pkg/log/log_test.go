@@ -1,0 +1,152 @@
+package log_test
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/require"
+
+	"github.com/lightstar/goworld/pkg/config"
+	"github.com/lightstar/goworld/pkg/log"
+	"github.com/lightstar/goworld/pkg/test/configtest"
+	"github.com/lightstar/goworld/pkg/test/iotest"
+)
+
+func TestLog(t *testing.T) {
+	stdout := iotest.NewBuffer()
+	stderr := iotest.NewBuffer()
+
+	logger, err := log.New(
+		log.WithName("test"),
+		log.WithStdout(stdout),
+		log.WithStderr(stderr),
+	)
+	require.NoError(t, err)
+
+	defer logger.Sync()
+
+	logger.Debug("Test debug message")
+	logger.Info("Test info message")
+	logger.Error("Test error message")
+
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test info message\n$`,
+		stdout.String())
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test error message\n`+
+		`github\.com/lightstar/goworld/pkg/log_test\.TestLog\n`, stderr.String())
+}
+
+func TestDebug(t *testing.T) {
+	stdout := iotest.NewBuffer()
+	stderr := iotest.NewBuffer()
+
+	logger, err := log.New(
+		log.WithName("test"),
+		log.WithDebug(),
+		log.WithStdout(stdout),
+		log.WithStderr(stderr),
+	)
+	require.NoError(t, err)
+
+	defer logger.Sync()
+
+	logger.Debug("Test debug message")
+	logger.Info("Test info message")
+	logger.Error("Test error message")
+
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test debug message\n`+
+		`\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test info message\n$`, stdout.String())
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test error message\n`+
+		`github\.com/lightstar/goworld/pkg/log_test\.TestDebug\n`, stderr.String())
+}
+
+func TestFatal(t *testing.T) {
+	stdout := iotest.NewBuffer()
+	stderr := iotest.NewBuffer()
+
+	logger, err := log.New(
+		log.WithName("test"),
+		log.WithStdout(stdout),
+		log.WithStderr(stderr),
+	)
+	require.NoError(t, err)
+
+	defer logger.Sync()
+
+	require.Panics(t, func() {
+		logger.Fatal("Test fatal message")
+	})
+
+	require.Empty(t, stdout.String())
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test fatal message\n`+
+		`github\.com/lightstar/goworld/pkg/log_test\.TestFatal\..+\n`, stderr.String())
+}
+
+func TestConfig(t *testing.T) {
+	stdout := iotest.NewBuffer()
+	stderr := iotest.NewBuffer()
+
+	configService := configtest.New(map[string]interface{}{
+		"key": struct {
+			Name  string
+			Debug bool
+		}{
+			Name:  "test",
+			Debug: true,
+		},
+	})
+	var logger log.Logger
+
+	require.NotPanics(t, func() {
+		logger = log.MustNew(
+			log.WithConfig(configService, "key"),
+			log.WithStdout(stdout),
+			log.WithStderr(stderr),
+		)
+	})
+
+	defer logger.Sync()
+
+	logger.Debug("Test debug message")
+	logger.Info("Test info message")
+	logger.Error("Test error message")
+
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test debug message\n`+
+		`\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test info message\n$`, stdout.String())
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] \(test\) Test error message\n`+
+		`github\.com/lightstar/goworld/pkg/log_test\.TestConfig\n`, stderr.String())
+}
+
+func TestConfigDefault(t *testing.T) {
+	stdout := iotest.NewBuffer()
+	stderr := iotest.NewBuffer()
+
+	configService := configtest.New(map[string]interface{}{
+		"key": config.ErrNoSuchKey,
+	})
+	var logger log.Logger
+
+	require.NotPanics(t, func() {
+		logger = log.MustNew(
+			log.WithConfig(configService, "key"),
+			log.WithStdout(stdout),
+			log.WithStderr(stderr),
+		)
+	})
+
+	defer logger.Sync()
+
+	logger.Debug("Test debug message")
+	logger.Info("Test info message")
+	logger.Error("Test error message")
+
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] Test info message\n$`, stdout.String())
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}] Test error message\n`+
+		`github\.com/lightstar/goworld/pkg/log_test\.TestConfigDefault\n`, stderr.String())
+}
+
+func TestConfigError(t *testing.T) {
+	configService := configtest.New(nil)
+
+	require.Panics(t, func() {
+		_ = log.MustNew(log.WithConfig(configService, "key"))
+	})
+}
