@@ -13,7 +13,7 @@ import (
 func WriteFile(t *testing.T, path string, data []byte) {
 	dir := filepath.Dir(path)
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		err = os.MkdirAll(dir, os.ModeDir)
+		err = os.MkdirAll(dir, 0700)
 		if err != nil {
 			t.Helper()
 			t.Fatalf("can't create directory '%s': %v", dir, err)
