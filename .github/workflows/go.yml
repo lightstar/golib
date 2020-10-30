@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TEST_CONFIG_ETCD_ENDPOINTS: etcd:2379
-      TEST_REDIS_ADDRESS: redis:6379
+      TEST_CONFIG_ETCD_ENDPOINTS: localhost:2379
+      TEST_REDIS_ADDRESS: localhost:6379
 
     services:
       redis:
