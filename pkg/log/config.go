@@ -18,6 +18,12 @@ type Config struct {
 type Option func(*Config) error
 
 // WithConfig option retrieves configuration from provided configuration service.
+//
+// Example JSON configuration with all possible fields (if some are not present, defaults will be used):
+//     {
+//         "name": "logger-name",
+//         "debug": true
+//     }
 func WithConfig(service config.Interface, key string) Option {
 	return func(cfg *Config) error {
 		data := struct {
@@ -45,7 +51,7 @@ func WithName(name string) Option {
 	}
 }
 
-// WithDebug option enables debug mode.
+// WithDebug option enables debug mode. Default: false.
 func WithDebug() Option {
 	return func(cfg *Config) error {
 		cfg.debug = true
