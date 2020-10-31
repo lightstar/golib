@@ -36,14 +36,6 @@ jobs:
         with:
           go-version: ^1.15
 
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Check code with linters
-        uses: golangci/golangci-lint-action@v2
-        with:
-          version: v1.32
-
       - name: Cache modules
         uses: actions/cache@v2
         with:
@@ -51,6 +43,14 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Check code with linters
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.32
 
       - name: Get dependencies
         run: go get -v -t -d ./...
