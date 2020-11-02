@@ -15,6 +15,7 @@
 package daemon
 
 import (
+	"context"
 	"os"
 	"os/signal"
 	"syscall"
@@ -80,16 +81,27 @@ func (daemon *Daemon) Delay() time.Duration {
 	return daemon.delay
 }
 
-// Run method runs daemon blocking loop. It will be stopped only after receiving TERM or INT system signal.
+// SigChan method gets daemon's signal channel. You can send any value there to simulate incoming system signal.
+func (daemon *Daemon) SigChan() chan<- os.Signal {
+	return daemon.sigChan
+}
+
+// Run method runs daemon blocking loop. It will be stopped after receiving TERM or INT system signal.
+// You can also pass cancellable context to stop daemon prematurely.
 // If processor was set, it will be called at regular intervals according to delay setting.
-func (daemon *Daemon) Run() {
+func (daemon *Daemon) Run(ctx context.Context) {
 	stopChan := make(chan struct{})
 
 	signal.Notify(daemon.sigChan, syscall.SIGTERM, syscall.SIGINT)
 
 	go func() {
-		sig := <-daemon.sigChan
-		daemon.logger.Info("got signal '%s'", sig.String())
+		select {
+		case sig := <-daemon.sigChan:
+			daemon.logger.Info("got signal '%s'", sig.String())
+		case <-ctx.Done():
+			daemon.logger.Info(ctx.Err().Error())
+		}
+
 		close(stopChan)
 	}()
 
@@ -111,14 +123,4 @@ func (daemon *Daemon) Run() {
 
 	daemon.logger.Info("stopped")
 	daemon.logger.Sync()
-}
-
-// Terminate method manually sends TERM signal to daemon.
-func (daemon *Daemon) Terminate() {
-	daemon.logger.Info("send signal '%s'", syscall.SIGTERM.String())
-
-	select {
-	case daemon.sigChan <- syscall.SIGTERM:
-	default:
-	}
 }

@@ -8,8 +8,10 @@ import (
 )
 
 const (
-	defDelay = 1
-	defName  = "daemon"
+	// DefDelay is the default process delay interval in milliseconds.
+	DefDelay = 1
+	// DefName is the default daemon's name.
+	DefName = "daemon"
 )
 
 // Config structure with daemon configuration. Shouldn't be created manually.
@@ -36,8 +38,8 @@ func WithConfig(service config.Interface, key string) Option {
 			Name  string
 			Delay int
 		}{
-			Name:  defName,
-			Delay: defDelay,
+			Name:  DefName,
+			Delay: DefDelay,
 		}
 
 		err := service.GetByKey(key, &data)
@@ -95,8 +97,8 @@ func WithProcessFunc(processFunc func()) Option {
 // buildConfig function builds configuration using list of provided options.
 func buildConfig(opts []Option) (*Config, error) {
 	cfg := &Config{
-		name:  defName,
-		delay: defDelay * time.Millisecond,
+		name:  DefName,
+		delay: DefDelay * time.Millisecond,
 	}
 
 	for _, opt := range opts {
