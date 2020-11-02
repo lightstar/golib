@@ -9,8 +9,21 @@ on:
       - master
 
 jobs:
+  golangci:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run linters
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.32
+
   build:
-    name: Build
+    name: Build & Test
     runs-on: ubuntu-latest
 
     env:
@@ -30,7 +43,6 @@ jobs:
           ALLOW_NONE_AUTHENTICATION: yes
 
     steps:
-
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -39,10 +51,13 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Check code with linters
-        uses: golangci/golangci-lint-action@v2
+      - name: Cache modules
+        uses: actions/cache@v2
         with:
-          version: v1.32
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
       - name: Get dependencies
         run: go get -v -t -d ./...
