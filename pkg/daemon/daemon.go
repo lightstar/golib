@@ -1,6 +1,6 @@
 // Package daemon provides service that runs blocking loop.
 // It will be stopped after receiving external system signal TERM or INT.
-// You can also send TERM signal manually by calling Terminate method.
+// Also you can prematurely stop daemon if you pass cancellable context into Run method.
 //
 // Optionally you can set some custom processor that will be called continuously with provided delay.
 //
@@ -10,7 +10,7 @@
 //          daemon.WithName("my-daemon"),
 //          daemon.WithDelay(1000),
 //          daemon.WithProcessor(myProcessor),
-//      ).Run()
+//      ).Run(ctx)
 //      // ... Shutdown your services and free resources
 package daemon
 
