@@ -15,7 +15,7 @@ func TestEnvJSON(t *testing.T) {
 	defer iotest.RemoveFile(t, testConfigPath)
 
 	os.Setenv("CONFIG_FILE", testConfigPath)
-	os.Setenv("CONFIG_ENCODER", "")
+	os.Unsetenv("CONFIG_ENCODER")
 
 	cfg, err := config.NewFromEnv()
 	require.NoError(t, err)
@@ -59,7 +59,7 @@ func TestEnvEtcd(t *testing.T) {
 	setupEtcd(t)
 	defer cleanEtcd(t)
 
-	os.Setenv("CONFIG_FILE", "")
+	os.Unsetenv("CONFIG_FILE")
 	os.Setenv("CONFIG_ETCD_ENDPOINTS", os.Getenv("TEST_CONFIG_ETCD_ENDPOINTS"))
 	os.Setenv("CONFIG_ETCD_KEY", etcdKey)
 	os.Setenv("CONFIG_ENCODER", "json")
@@ -77,10 +77,10 @@ func TestEnvErrors(t *testing.T) {
 	_, err := config.NewFromEnv()
 	require.Error(t, err)
 
-	os.Setenv("CONFIG_FILE", "")
-	os.Setenv("CONFIG_ETCD_ENDPOINTS", "")
-	os.Setenv("CONFIG_ETCD_KEY", "")
-	os.Setenv("CONFIG_ENCODER", "")
+	os.Unsetenv("CONFIG_FILE")
+	os.Unsetenv("CONFIG_ETCD_ENDPOINTS")
+	os.Unsetenv("CONFIG_ETCD_KEY")
+	os.Unsetenv("CONFIG_ENCODER")
 
 	_, err = config.NewFromEnv()
 	require.Error(t, err)
