@@ -28,7 +28,7 @@ func TestServer(t *testing.T) {
 
 	server := httpserver.MustNew(
 		httpserver.WithName("test-server"),
-		httpserver.WithAddress("127.0.0.1:6060"),
+		httpserver.WithAddress("127.0.0.1:9090"),
 		httpserver.WithHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			_, _ = w.Write([]byte("test response"))
 		})),
@@ -36,7 +36,7 @@ func TestServer(t *testing.T) {
 	)
 
 	require.Equal(t, "test-server", server.Name())
-	require.Equal(t, "127.0.0.1:6060", server.Address())
+	require.Equal(t, "127.0.0.1:9090", server.Address())
 
 	ctx, cancel := context.WithCancel(context.Background())
 	stopChan := make(chan struct{})
@@ -50,7 +50,7 @@ func TestServer(t *testing.T) {
 		Timeout: time.Second,
 	}
 
-	resp, err := client.Get("http://127.0.0.1:6060")
+	resp, err := client.Get("http://127.0.0.1:9090")
 	require.NoError(t, err)
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -64,7 +64,7 @@ func TestServer(t *testing.T) {
 	cancel()
 	<-stopChan
 
-	_, err = client.Get("http://127.0.0.1:6060")
+	_, err = client.Get("http://127.0.0.1:9090")
 	require.Error(t, err)
 
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \(test-server\) started\n`+
@@ -86,7 +86,7 @@ func TestServerWait(t *testing.T) {
 
 	server := httpserver.MustNew(
 		httpserver.WithName("test-server"),
-		httpserver.WithAddress("127.0.0.1:6060"),
+		httpserver.WithAddress("127.0.0.1:9090"),
 		httpserver.WithHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			close(handlerEnteredChan)
 			time.Sleep(time.Second)
@@ -96,7 +96,7 @@ func TestServerWait(t *testing.T) {
 	)
 
 	require.Equal(t, "test-server", server.Name())
-	require.Equal(t, "127.0.0.1:6060", server.Address())
+	require.Equal(t, "127.0.0.1:9090", server.Address())
 
 	ctx, cancel := context.WithCancel(context.Background())
 	stopChan := make(chan struct{})
@@ -107,7 +107,7 @@ func TestServerWait(t *testing.T) {
 	}()
 
 	go func() {
-		_, _ = http.Get("http://127.0.0.1:6060")
+		_, _ = http.Get("http://127.0.0.1:9090")
 	}()
 
 	<-handlerEnteredChan
