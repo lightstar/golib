@@ -46,6 +46,8 @@ func TestServer(t *testing.T) {
 		close(stopChan)
 	}()
 
+	time.Sleep(2 * time.Second)
+
 	client := &http.Client{
 		Timeout: time.Second,
 	}
@@ -105,6 +107,8 @@ func TestServerWait(t *testing.T) {
 		server.Run(ctx)
 		close(stopChan)
 	}()
+
+	time.Sleep(2 * time.Second)
 
 	go func() {
 		_, _ = http.Get("http://127.0.0.1:9090")
