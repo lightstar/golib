@@ -5,7 +5,6 @@ import (
 	"context"
 	"io/ioutil"
 	"net/http"
-	"sync"
 	"testing"
 	"time"
 
@@ -39,7 +38,13 @@ func TestServer(t *testing.T) {
 	require.Equal(t, "test-server", server.Name())
 	require.Equal(t, "127.0.0.1:6060", server.Address())
 
-	go server.Run()
+	ctx, cancel := context.WithCancel(context.Background())
+	stopChan := make(chan struct{})
+
+	go func() {
+		server.Run(ctx)
+		close(stopChan)
+	}()
 
 	client := &http.Client{
 		Timeout: time.Second,
@@ -56,7 +61,8 @@ func TestServer(t *testing.T) {
 	err = resp.Body.Close()
 	require.NoError(t, err)
 
-	server.Shutdown(context.Background())
+	cancel()
+	<-stopChan
 
 	_, err = client.Get("http://127.0.0.1:6060")
 	require.Error(t, err)
@@ -75,16 +81,14 @@ func TestServerWait(t *testing.T) {
 		log.WithStderr(stderr),
 	)
 
-	wg := new(sync.WaitGroup)
-	wg.Add(1)
-
+	handlerEnteredChan := make(chan struct{})
 	handlerFinished := false
 
 	server := httpserver.MustNew(
 		httpserver.WithName("test-server"),
 		httpserver.WithAddress("127.0.0.1:6060"),
 		httpserver.WithHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			wg.Done()
+			close(handlerEnteredChan)
 			time.Sleep(time.Second)
 			handlerFinished = true
 		})),
@@ -94,14 +98,21 @@ func TestServerWait(t *testing.T) {
 	require.Equal(t, "test-server", server.Name())
 	require.Equal(t, "127.0.0.1:6060", server.Address())
 
-	go server.Run()
+	ctx, cancel := context.WithCancel(context.Background())
+	stopChan := make(chan struct{})
+
+	go func() {
+		server.Run(ctx)
+		close(stopChan)
+	}()
 
 	go func() {
 		_, _ = http.Get("http://127.0.0.1:6060")
 	}()
 
-	wg.Wait()
-	server.Shutdown(context.Background())
+	<-handlerEnteredChan
+	cancel()
+	<-stopChan
 
 	require.True(t, handlerFinished)
 

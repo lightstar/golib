@@ -14,7 +14,6 @@ package httpserver
 import (
 	"context"
 	"net/http"
-	"sync"
 
 	"github.com/lightstar/golib/pkg/log"
 )
@@ -24,8 +23,6 @@ type Server struct {
 	name   string
 	logger log.Logger
 	server *http.Server
-
-	wgRun *sync.WaitGroup
 }
 
 // New function creates new server with provided options.
@@ -50,14 +47,10 @@ func New(opts ...Option) (*Server, error) {
 		Handler: config.handler,
 	}
 
-	wgRun := new(sync.WaitGroup)
-	wgRun.Add(1)
-
 	return &Server{
 		name:   config.name,
 		logger: logger,
 		server: server,
-		wgRun:  wgRun,
 	}, nil
 }
 
@@ -81,30 +74,40 @@ func (server *Server) Address() string {
 	return server.server.Addr
 }
 
-// Run method runs server listen loop. It should be called in a separate goroutine, otherwise it will be blocked.
-// Call Shutdown method when you wish listening loop to stop.
-func (server *Server) Run() {
+// Run method runs server listen loop. It is blocking so you probably want to run it in a separate goroutine.
+// If you pass cancellable context here, you will be able to gracefully shutdown server that waits for all requests
+// to complete.
+//
+// Only upgraded connections (such as websocket ones) will not be waited for, you will need to shutdown
+// them manually.
+func (server *Server) Run(ctx context.Context) {
+	stopChan := make(chan struct{})
+
 	server.logger.Info("started")
 
-	if err := server.server.ListenAndServe(); err != nil {
-		if err != http.ErrServerClosed {
-			server.logger.Error(err.Error())
-		} else {
-			server.logger.Info("stopped")
+	go func() {
+		if err := server.server.ListenAndServe(); err != nil {
+			if err == http.ErrServerClosed {
+				server.logger.Info("stopped")
+			} else {
+				server.logger.Error(err.Error())
+			}
 		}
+
+		close(stopChan)
+	}()
+
+	select {
+	case <-stopChan:
+	case <-ctx.Done():
 	}
 
-	server.wgRun.Done()
-}
-
-// Shutdown method gracefully shutdowns server waiting for all connections to complete.
-// It should be called after Run method in another goroutine, otherwise it will hang forever waiting for Run to finish.
-func (server *Server) Shutdown(ctx context.Context) {
-	err := server.server.Shutdown(ctx)
+	err := server.server.Shutdown(context.Background())
 	if err != nil {
 		server.logger.Error(err.Error())
 	}
 
-	server.wgRun.Wait()
+	<-stopChan
+
 	server.logger.Sync()
 }
