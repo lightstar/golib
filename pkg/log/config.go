@@ -51,10 +51,10 @@ func WithName(name string) Option {
 	}
 }
 
-// WithDebug option enables debug mode. Default: false.
-func WithDebug() Option {
+// WithDebug option sets debug mode. Default: false.
+func WithDebug(debug bool) Option {
 	return func(cfg *Config) error {
-		cfg.debug = true
+		cfg.debug = debug
 		return nil
 	}
 }

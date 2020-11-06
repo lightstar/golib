@@ -40,7 +40,7 @@ func TestDebug(t *testing.T) {
 
 	logger, err := log.New(
 		log.WithName("test"),
-		log.WithDebug(),
+		log.WithDebug(true),
 		log.WithStdout(stdout),
 		log.WithStderr(stderr),
 	)
