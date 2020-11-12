@@ -1,14 +1,11 @@
 // Package httpserver provides API to standard http server with graceful shutdown.
 //
 // Typical usage:
-//      server := httpserver.New(
+//      httpserver.New(
 //          httpserver.WithName("my-server"),
 //          httpserver.WithAddress("127.0.0.1:8080"),
 //          httpserver.WithHandler(myHandler),
-//      )
-//      go server.Run()
-//      // ... Initialize other services, run daemon loop, etc
-//      server.Shutdown()
+//      ).Run(ctx)
 package httpserver
 
 import (
@@ -18,7 +15,8 @@ import (
 	"github.com/lightstar/golib/pkg/log"
 )
 
-// Server structure that provides http server functionality.
+// Server structure that provides http server functionality. Don't create manually, use the functions down below
+// instead.
 type Server struct {
 	name   string
 	logger log.Logger
