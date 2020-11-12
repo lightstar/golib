@@ -9,16 +9,28 @@ import (
 	"github.com/lightstar/golib/pkg/errors"
 )
 
-// nolint: funlen // cases array is too long to pass that linter
+type Test struct {
+	name     string
+	in       interface{}
+	out      interface{}
+	expected interface{}
+}
+
+type TestError struct {
+	name    string
+	in      interface{}
+	out     interface{}
+	err     error
+	wrapped bool
+}
+
+// nolint: funlen // tests slice is too long to pass that linter
 func TestConvert(t *testing.T) {
 	convertor := i2s.Instance()
 
-	cases := []struct {
-		in       interface{}
-		out      interface{}
-		expected interface{}
-	}{
+	tests := []Test{
 		{
+			name: "String",
 			in: map[string]interface{}{
 				"key": "value",
 			},
@@ -32,6 +44,7 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
+			name: "Int",
 			in: map[string]interface{}{
 				"key": 5,
 			},
@@ -45,6 +58,7 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
+			name: "Float",
 			in: map[string]interface{}{
 				"key": 2.3,
 			},
@@ -58,6 +72,7 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
+			name: "Float2Int",
 			in: map[string]interface{}{
 				"key": 3.6,
 			},
@@ -71,6 +86,7 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
+			name: "Int2Float",
 			in: map[string]interface{}{
 				"key": 4,
 			},
@@ -84,6 +100,7 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
+			name: "Bool",
 			in: map[string]interface{}{
 				"key": true,
 			},
@@ -97,6 +114,7 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
+			name: "Map",
 			in: map[string]interface{}{
 				"key": map[string]interface{}{
 					"foo": "bar",
@@ -120,6 +138,7 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
+			name: "SliceOfStrings",
 			in: map[string]interface{}{
 				"key": []interface{}{"value1", "value2"},
 			},
@@ -133,6 +152,7 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
+			name: "SliceOfMaps",
 			in: map[string]interface{}{
 				"key": []map[string]interface{}{
 					{"foo": "bar1"},
@@ -158,6 +178,7 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
+			name: "Compound",
 			in: map[string]interface{}{
 				"name":    "Peter",
 				"age":     30,
@@ -208,75 +229,85 @@ func TestConvert(t *testing.T) {
 		},
 	}
 
-	for i, c := range cases {
-		err := convertor.Convert(c.in, c.out)
-		require.NoErrorf(t, err, "case %d", i)
-		require.Equalf(t, c.out, c.expected, "case %d", i)
+	for _, test := range tests {
+		func(test Test) {
+			t.Run(test.name, func(t *testing.T) {
+				err := convertor.Convert(test.in, test.out)
+				require.NoError(t, err)
+				require.Equal(t, test.out, test.expected)
+			})
+		}(test)
 	}
 }
 
 func TestErrors(t *testing.T) {
 	convertor := i2s.Instance()
 
-	cases := []struct {
-		in      interface{}
-		out     interface{}
-		err     error
-		wrapped bool
-	}{
+	tests := []TestError{
 		{
-			in:  map[string]interface{}{},
-			out: struct{}{},
-			err: i2s.ErrOutputNotPointer,
+			name: "OutputNotPointer",
+			in:   map[string]interface{}{},
+			out:  struct{}{},
+			err:  i2s.ErrOutputNotPointer,
 		},
 		{
-			in:  map[string]interface{}{"key": "value"},
-			out: &struct{ Key int }{},
-			err: i2s.ErrMismatchedTypes,
+			name: "String2Int",
+			in:   map[string]interface{}{"key": "value"},
+			out:  &struct{ Key int }{},
+			err:  i2s.ErrMismatchedTypes,
 		},
 		{
-			in:  map[string]interface{}{"key": 5},
-			out: &struct{ Key string }{},
-			err: i2s.ErrMismatchedTypes,
+			name: "Int2String",
+			in:   map[string]interface{}{"key": 5},
+			out:  &struct{ Key string }{},
+			err:  i2s.ErrMismatchedTypes,
 		},
 		{
-			in:  map[string]interface{}{"key": 5.},
-			out: &struct{ Key string }{},
-			err: i2s.ErrMismatchedTypes,
+			name: "Float2String",
+			in:   map[string]interface{}{"key": 5.},
+			out:  &struct{ Key string }{},
+			err:  i2s.ErrMismatchedTypes,
 		},
 		{
-			in:  map[string]interface{}{"key": true},
-			out: &struct{ Key string }{},
-			err: i2s.ErrMismatchedTypes,
+			name: "Bool2String",
+			in:   map[string]interface{}{"key": true},
+			out:  &struct{ Key string }{},
+			err:  i2s.ErrMismatchedTypes,
 		},
 		{
-			in:  map[string]interface{}{"key": map[string]interface{}{}},
-			out: &struct{ Key string }{},
-			err: i2s.ErrMismatchedTypes,
+			name: "Map2String",
+			in:   map[string]interface{}{"key": map[string]interface{}{}},
+			out:  &struct{ Key string }{},
+			err:  i2s.ErrMismatchedTypes,
 		},
 		{
-			in:  map[string]interface{}{"key": []interface{}{}},
-			out: &struct{ Key string }{},
-			err: i2s.ErrMismatchedTypes,
+			name: "Slice2String",
+			in:   map[string]interface{}{"key": []interface{}{}},
+			out:  &struct{ Key string }{},
+			err:  i2s.ErrMismatchedTypes,
 		},
 		{
-			in:  map[string]interface{}{"key": map[int]interface{}{0: "data"}},
-			out: &struct{ Key struct{} }{},
-			err: i2s.ErrMapKeyNotString,
+			name: "IntMapKey",
+			in:   map[string]interface{}{"key": map[int]interface{}{0: "data"}},
+			out:  &struct{ Key struct{} }{},
+			err:  i2s.ErrMapKeyNotString,
 		},
 		{
+			name:    "MissedField",
 			in:      map[string]interface{}{"key": "value"},
 			out:     &struct{}{},
 			err:     i2s.ErrUnknownField,
 			wrapped: true,
 		},
 		{
+			name:    "Func",
 			in:      map[string]interface{}{"key": func() {}},
 			out:     &struct{ Key func() }{},
 			err:     i2s.ErrUnsupportedType,
 			wrapped: true,
 		},
 		{
+			name:    "SliceOfFuncs",
 			in:      map[string]interface{}{"key": []func(){func() {}}},
 			out:     &struct{ Key []func() }{},
 			err:     i2s.ErrUnsupportedType,
@@ -284,58 +315,17 @@ func TestErrors(t *testing.T) {
 		},
 	}
 
-	for i, c := range cases {
-		err := convertor.Convert(c.in, c.out)
+	for _, test := range tests {
+		func(test TestError) {
+			t.Run(test.name, func(t *testing.T) {
+				err := convertor.Convert(test.in, test.out)
 
-		if c.wrapped {
-			err = errors.Unwrap(err)
-		}
+				if test.wrapped {
+					err = errors.Unwrap(err)
+				}
 
-		require.Samef(t, c.err, err, "case %d", i)
+				require.Same(t, test.err, err)
+			})
+		}(test)
 	}
 }
-
-//
-// func TestNumberConvert(t *testing.T) {
-// 	cfg := config.NewFromRaw(map[string]interface{}{
-// 		"key": 5,
-// 	})
-//
-// 	data := &struct {
-// 		Key float64
-// 	}{}
-// 	err := cfg.Get(data)
-// 	if err != nil {
-// 		t.Errorf("%v", err)
-// 		return
-// 	}
-//
-// 	expectedData := &struct {
-// 		Key float64
-// 	}{Key: 5}
-//
-// 	if !reflect.DeepEqual(data, expectedData) {
-// 		t.Errorf("Config data doesn't match, expected: %v, got: %v", expectedData, data)
-// 	}
-//
-// 	cfg = config.NewFromRaw(map[string]interface{}{
-// 		"key": 5.3,
-// 	})
-//
-// 	data2 := &struct {
-// 		Key int
-// 	}{}
-// 	err = cfg.Get(data2)
-// 	if err != nil {
-// 		t.Errorf("Unexpected error: %v", err)
-// 		return
-// 	}
-//
-// 	expectedData2 := &struct {
-// 		Key int
-// 	}{Key: 5}
-//
-// 	if !reflect.DeepEqual(data2, expectedData2) {
-// 		t.Errorf("Config data doesn't match, expected: %v, got: %v", expectedData2, data2)
-// 	}
-// }
