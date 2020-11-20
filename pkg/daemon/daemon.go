@@ -121,6 +121,8 @@ func (daemon *Daemon) Run(ctx context.Context) {
 		<-stopChan
 	}
 
+	signal.Stop(daemon.sigChan)
+
 	daemon.logger.Info("stopped")
 	daemon.logger.Sync()
 }
