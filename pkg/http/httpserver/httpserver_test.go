@@ -10,10 +10,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/golib/pkg/config"
 	"github.com/lightstar/golib/pkg/http/httpserver"
 	"github.com/lightstar/golib/pkg/log"
-	"github.com/lightstar/golib/pkg/test/configtest"
 	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
@@ -123,48 +121,4 @@ func TestServerWait(t *testing.T) {
 	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \(test-server\) started\n`+
 		`\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \(test-server\) stopped\n$`, stdout.String())
 	require.Empty(t, stderr.String())
-}
-
-func TestConfig(t *testing.T) {
-	configService := configtest.New(map[string]interface{}{
-		"key": struct {
-			Name    string
-			Address string
-		}{
-			Name:    "test-server",
-			Address: "test-address",
-		},
-	})
-
-	var server *httpserver.Server
-
-	require.NotPanics(t, func() {
-		server = httpserver.MustNew(httpserver.WithConfig(configService, "key"))
-	})
-
-	require.Equal(t, "test-server", server.Name())
-	require.Equal(t, "test-address", server.Address())
-}
-
-func TestConfigDefault(t *testing.T) {
-	configService := configtest.New(map[string]interface{}{
-		"key": config.ErrNoSuchKey,
-	})
-
-	var server *httpserver.Server
-
-	require.NotPanics(t, func() {
-		server = httpserver.MustNew(httpserver.WithConfig(configService, "key"))
-	})
-
-	require.Equal(t, httpserver.DefName, server.Name())
-	require.Equal(t, httpserver.DefAddress, server.Address())
-}
-
-func TestConfigError(t *testing.T) {
-	configService := configtest.New(nil)
-
-	require.Panics(t, func() {
-		_ = httpserver.MustNew(httpserver.WithConfig(configService, "key"))
-	})
 }

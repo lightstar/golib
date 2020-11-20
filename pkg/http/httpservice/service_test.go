@@ -10,14 +10,12 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/golib/pkg/config"
 	"github.com/lightstar/golib/pkg/errors"
 	"github.com/lightstar/golib/pkg/http/httpservice"
 	"github.com/lightstar/golib/pkg/http/httpservice/context"
 	"github.com/lightstar/golib/pkg/http/httpservice/decoder"
 	"github.com/lightstar/golib/pkg/http/httpservice/encoder"
 	"github.com/lightstar/golib/pkg/log"
-	"github.com/lightstar/golib/pkg/test/configtest"
 	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
@@ -137,50 +135,6 @@ func TestService(t *testing.T) {
 			})
 		}(test)
 	}
-}
-
-func TestConfig(t *testing.T) {
-	configService := configtest.New(map[string]interface{}{
-		"key": struct {
-			Name  string
-			Debug bool
-		}{
-			Name:  "test-service",
-			Debug: true,
-		},
-	})
-
-	var service *httpservice.Service
-
-	require.NotPanics(t, func() {
-		service = httpservice.MustNew(httpservice.WithConfig(configService, "key"))
-	})
-
-	require.Equal(t, "test-service", service.Name())
-	require.True(t, service.Debug())
-}
-
-func TestConfigDefault(t *testing.T) {
-	configService := configtest.New(map[string]interface{}{
-		"key": config.ErrNoSuchKey,
-	})
-
-	var service *httpservice.Service
-
-	require.NotPanics(t, func() {
-		service = httpservice.MustNew(httpservice.WithConfig(configService, "key"))
-	})
-
-	require.Equal(t, httpservice.DefName, service.Name())
-	require.False(t, service.Debug())
-}
-
-func TestConfigError(t *testing.T) {
-	configService := configtest.New(nil)
-
-	require.Panics(t, func() {
-		_ = httpservice.MustNew(httpservice.WithConfig(configService, "key"))
-	})
 }
 
 func testService(t *testing.T, test Test) {

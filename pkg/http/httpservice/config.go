@@ -72,7 +72,9 @@ func WithLogger(logger log.Logger) Option {
 
 // buildConfig function builds configuration using list of provided options.
 func buildConfig(opts []Option) (*Config, error) {
-	cfg := &Config{}
+	cfg := &Config{
+		name: DefName,
+	}
 
 	for _, opt := range opts {
 		if err := opt(cfg); err != nil {

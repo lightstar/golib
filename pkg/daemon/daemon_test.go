@@ -8,10 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/golib/pkg/config"
 	"github.com/lightstar/golib/pkg/daemon"
 	"github.com/lightstar/golib/pkg/log"
-	"github.com/lightstar/golib/pkg/test/configtest"
 	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
@@ -119,46 +117,4 @@ func TestNopDaemon(t *testing.T) {
 		`\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \(test-daemon\) context deadline exceeded\n`+
 		`\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \(test-daemon\) stopped\n$`, stdout.String())
 	require.Empty(t, stderr.String())
-}
-
-func TestConfig(t *testing.T) {
-	configService := configtest.New(map[string]interface{}{
-		"key": struct {
-			Name  string
-			Delay int
-		}{
-			Name:  "test-daemon",
-			Delay: 2000,
-		},
-	})
-	var dmn *daemon.Daemon
-
-	require.NotPanics(t, func() {
-		dmn = daemon.MustNew(daemon.WithConfig(configService, "key"))
-	})
-
-	require.Equal(t, "test-daemon", dmn.Name())
-	require.Equal(t, 2*time.Second, dmn.Delay())
-}
-
-func TestConfigDefault(t *testing.T) {
-	configService := configtest.New(map[string]interface{}{
-		"key": config.ErrNoSuchKey,
-	})
-	var dmn *daemon.Daemon
-
-	require.NotPanics(t, func() {
-		dmn = daemon.MustNew(daemon.WithConfig(configService, "key"))
-	})
-
-	require.Equal(t, "daemon", dmn.Name())
-	require.Equal(t, 1*time.Millisecond, dmn.Delay())
-}
-
-func TestConfigError(t *testing.T) {
-	configService := configtest.New(nil)
-
-	require.Panics(t, func() {
-		_ = daemon.MustNew(daemon.WithConfig(configService, "key"))
-	})
 }
