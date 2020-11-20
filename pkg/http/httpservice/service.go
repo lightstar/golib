@@ -27,7 +27,7 @@ import (
 	"github.com/lightstar/golib/pkg/log"
 )
 
-// Service structure that provides http service functionality.  Don't create manually, use the functions down below
+// Service structure that provides http service functionality. Don't create manually, use the functions down below
 // instead.
 type Service struct {
 	name  string
