@@ -18,6 +18,7 @@ func TestPing(t *testing.T) {
 
 func TestPingError(t *testing.T) {
 	client, err := mongo.NewClient(
+		mongo.WithAddress("unknown_address"),
 		mongo.WithConnectTimeout(1),
 		mongo.WithSocketTimeout(1),
 	)
