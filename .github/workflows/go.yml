@@ -29,8 +29,13 @@ jobs:
     env:
       TEST_CONFIG_ETCD_ENDPOINTS: localhost:2379
       TEST_REDIS_ADDRESS: localhost:6379
+      TEST_MONGO_ADDRESS: localhost:27017
 
     services:
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
       redis:
         image: redis
         ports:
