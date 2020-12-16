@@ -9,6 +9,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.6.1
 	go.etcd.io/etcd v0.5.0-alpha.5.0.20200910180754-dd1b699fc489
+	go.mongodb.org/mongo-driver v1.4.3
 	go.uber.org/zap v1.16.0
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 )
