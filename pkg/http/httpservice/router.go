@@ -49,9 +49,9 @@ func (service *Service) handle(action string, handler HandlerFunc) httprouter.Ha
 	enc := service.encoder
 	dec := service.decoder
 
-	return func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		c := service.pool.Get().(*context.Context)
-		c.Reset(w, r, enc, dec, action)
+		c.Reset(w, r, params, enc, dec, action)
 
 		if err := handler(c); err != nil {
 			service.error(err, c)

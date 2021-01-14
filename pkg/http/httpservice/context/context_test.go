@@ -21,10 +21,11 @@ func TestContext(t *testing.T) {
 	logger := log.NewNop()
 	rec := httptest.NewRecorder()
 	req := httptest.NewRequest("GET", "/", strings.NewReader(`{"message":"test"}`))
+	params := NewParams()
 
 	ctx := context.New(logger)
 
-	ctx.Reset(rec, req, encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
+	ctx.Reset(rec, req, params, encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
 		w.WriteHeader(status)
 		_, err := w.Write([]byte(fmt.Sprintf("%s", data)))
 		return err
@@ -35,6 +36,7 @@ func TestContext(t *testing.T) {
 	require.Same(t, logger, ctx.Logger())
 	require.Same(t, rec, ctx.Response().ResponseWriter)
 	require.Same(t, req, ctx.Request())
+	require.Same(t, params, ctx.Params())
 
 	require.Equal(t, "unknown", ctx.Result())
 	require.Equal(t, "test action", ctx.Action())
@@ -73,7 +75,7 @@ func TestContextEncodeError(t *testing.T) {
 
 	encodeError := errors.New("test encode error")
 
-	ctx.Reset(rec, req, encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
+	ctx.Reset(rec, req, nil, encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
 		return encodeError
 	}), nil, "")
 
@@ -93,7 +95,7 @@ func TestContextDecodeError(t *testing.T) {
 
 	decodeError := errors.New("test decode error")
 
-	ctx.Reset(rec, req, nil, decoder.Func(func(r *http.Request, data interface{}) error {
+	ctx.Reset(rec, req, nil, nil, decoder.Func(func(r *http.Request, data interface{}) error {
 		return decodeError
 	}), "")
 

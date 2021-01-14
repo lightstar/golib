@@ -128,11 +128,12 @@ func TestResponse(t *testing.T) {
 
 				ctx := context.New(logger)
 
-				ctx.Reset(rec, req, encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
-					w.WriteHeader(status)
-					_, err := w.Write([]byte(fmt.Sprintf("%s", data)))
-					return err
-				}), nil, "")
+				ctx.Reset(rec, req, nil,
+					encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
+						w.WriteHeader(status)
+						_, err := w.Write([]byte(fmt.Sprintf("%s", data)))
+						return err
+					}), nil, "")
 
 				test.fun(ctx)
 
@@ -157,7 +158,7 @@ func TestResponseEncodeError(t *testing.T) {
 
 	ctx := context.New(logger)
 
-	ctx.Reset(rec, req, encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
+	ctx.Reset(rec, req, nil, encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
 		return errors.New("encode error")
 	}), nil, "")
 

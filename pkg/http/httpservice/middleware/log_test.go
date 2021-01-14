@@ -26,7 +26,7 @@ func TestLog(t *testing.T) {
 	req := httptest.NewRequest("GET", "/", nil)
 
 	ctx := context.New(logger)
-	ctx.Reset(rec, req, nil, nil, "some action")
+	ctx.Reset(rec, req, nil, nil, nil, "some action")
 
 	err := middleware.Log(logger)(func(ctx *context.Context) error {
 		ctx.SetResult("some result")

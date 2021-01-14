@@ -6,7 +6,7 @@
 //      ctx := context.New(logger)
 //
 //      // ... Request comes
-//      ctx.Reset(w, r, enc, dec, action)
+//      ctx.Reset(w, r, params, enc, dec, action)
 //      if err := handler(ctx); err != nil {
 //          // Handle error
 //      }
@@ -34,6 +34,7 @@ type Context struct {
 	result   string
 	response *response.Writer
 	request  *http.Request
+	params   Params
 	encoder  encoder.Encoder
 	decoder  decoder.Decoder
 	logger   log.Logger
@@ -82,6 +83,11 @@ func (ctx *Context) Request() *http.Request {
 	return ctx.request
 }
 
+// Params method retrieves inner request params object.
+func (ctx *Context) Params() Params {
+	return ctx.params
+}
+
 // RemoteAddr method retrieves client's remote address.
 func (ctx *Context) RemoteAddr() string {
 	return ctx.request.RemoteAddr
@@ -116,6 +122,7 @@ func (ctx *Context) Decode(data interface{}) error {
 func (ctx *Context) Reset(
 	w http.ResponseWriter,
 	r *http.Request,
+	params Params,
 	enc encoder.Encoder,
 	dec decoder.Decoder,
 	action string,
@@ -125,6 +132,7 @@ func (ctx *Context) Reset(
 	ctx.action = action
 	ctx.result = "unknown"
 	ctx.request = r
+	ctx.params = params
 	ctx.encoder = enc
 	ctx.decoder = dec
 }

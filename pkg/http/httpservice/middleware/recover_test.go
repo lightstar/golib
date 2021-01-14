@@ -17,7 +17,7 @@ func TestRecover(t *testing.T) {
 	req := httptest.NewRequest("GET", "/", nil)
 
 	ctx := context.New(log.NewNop())
-	ctx.Reset(rec, req, nil, nil, "some action")
+	ctx.Reset(rec, req, nil, nil, nil, "some action")
 
 	err := middleware.Recover()(func(ctx *context.Context) error {
 		panic("some panic")
@@ -32,7 +32,7 @@ func TestRecoverNoPanic(t *testing.T) {
 	req := httptest.NewRequest("GET", "/", nil)
 
 	ctx := context.New(log.NewNop())
-	ctx.Reset(rec, req, nil, nil, "some action")
+	ctx.Reset(rec, req, nil, nil, nil, "some action")
 
 	err := middleware.Recover()(func(ctx *context.Context) error {
 		ctx.SetResult("some result")
