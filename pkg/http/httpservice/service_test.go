@@ -35,6 +35,7 @@ type Test struct {
 	testFunc  TestFunc
 }
 
+// nolint: funlen // tests slice is too long to pass that linter
 func TestService(t *testing.T) {
 	middlewareSetupFunc := func(useFunc func(httpservice.MiddlewareFunc)) SetupFunc {
 		return func(service *httpservice.Service, handler httpservice.HandlerFunc, param map[string]string) {
@@ -85,6 +86,13 @@ func TestService(t *testing.T) {
 			method: "DELETE",
 			setupFunc: func(service *httpservice.Service, handler httpservice.HandlerFunc, param map[string]string) {
 				service.DELETE("/test", "", handler)
+			},
+		},
+		{
+			name:   "OPTIONS",
+			method: "OPTIONS",
+			setupFunc: func(service *httpservice.Service, handler httpservice.HandlerFunc, param map[string]string) {
+				service.OPTIONS("/test", "", handler)
 			},
 		},
 		{

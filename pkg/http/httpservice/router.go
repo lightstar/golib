@@ -41,6 +41,12 @@ func (service *Service) DELETE(path string, action string, handler HandlerFunc) 
 	service.router.DELETE(path, service.handle(action, handler))
 }
 
+// OPTIONS method applies handler for all OPTIONS requests coming to provided path.
+// Action is an arbitrary string that identifies this specific handler (used in logs for example).
+func (service *Service) OPTIONS(path string, action string, handler HandlerFunc) {
+	service.router.OPTIONS(path, service.handle(action, handler))
+}
+
 func (service *Service) handle(action string, handler HandlerFunc) httprouter.Handle {
 	if service.middleware != nil {
 		handler = service.middleware(handler)
