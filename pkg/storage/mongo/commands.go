@@ -120,8 +120,8 @@ func (session *Session) CountAll() (int64, error) {
 
 // FindOne method retrieves one entity from collection using filter into entity parameter that must be a pointer to
 // appropriate structure. On success it returns number of retrieved entities.
-func (session *Session) FindOne(filter Data, entity interface{}) (int64, error) {
-	err := session.collection.FindOne(session.context, filter).Decode(entity)
+func (session *Session) FindOne(filter Data, entity interface{}, opts ...*options.FindOneOptions) (int64, error) {
+	err := session.collection.FindOne(session.context, filter, opts...).Decode(entity)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return 0, nil
@@ -135,8 +135,8 @@ func (session *Session) FindOne(filter Data, entity interface{}) (int64, error) 
 
 // Find method retrieves list of entities from collection using filter into entities parameter that must be a pointer to
 // a slice of appropriate structures. On success it returns number of retrieved entities.
-func (session *Session) Find(filter Data, entities interface{}) (int64, error) {
-	cursor, err := session.collection.Find(session.context, filter)
+func (session *Session) Find(filter Data, entities interface{}, opts ...*options.FindOptions) (int64, error) {
+	cursor, err := session.collection.Find(session.context, filter, opts...)
 	if err != nil {
 		return 0, mongoError(err)
 	}
