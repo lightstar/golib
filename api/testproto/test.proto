@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "github.com/lightstar/golib/api/testproto";
+
+package testproto;
+
+service Test {
+  rpc GetData(Input) returns (Output) {}
+}
+
+message Input {
+  int32 a = 1;
+}
+
+message Output {
+  int32 b = 1;
+}
