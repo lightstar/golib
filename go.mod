@@ -1,17 +1,17 @@
 module github.com/lightstar/golib
 
-go 1.15
+go 1.16
 
 require (
-	github.com/golang/protobuf v1.4.3
 	github.com/gomodule/redigo v1.8.2
-	github.com/julienschmidt/httprouter v1.2.0
+	github.com/julienschmidt/httprouter v1.3.0
 	github.com/pelletier/go-toml v1.8.1
 	github.com/pkg/errors v0.9.1
-	github.com/stretchr/testify v1.6.1
-	go.etcd.io/etcd v0.5.0-alpha.5.0.20200910180754-dd1b699fc489
+	github.com/stretchr/testify v1.7.0
+	go.etcd.io/etcd/client/v3 v3.5.0
 	go.mongodb.org/mongo-driver v1.4.3
-	go.uber.org/zap v1.16.0
-	google.golang.org/grpc v1.29.1
-	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
+	go.uber.org/zap v1.17.0
+	google.golang.org/grpc v1.38.0
+	google.golang.org/protobuf v1.26.0
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
