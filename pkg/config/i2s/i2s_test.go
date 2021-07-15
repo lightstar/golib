@@ -138,6 +138,22 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
+			name: "Map2Map",
+			in: map[string]interface{}{
+				"key": map[string]interface{}{
+					"foo": "bar",
+				},
+			},
+			out: &struct {
+				Key map[string]interface{}
+			}{},
+			expected: &struct {
+				Key map[string]interface{}
+			}{
+				Key: map[string]interface{}{"foo": "bar"},
+			},
+		},
+		{
 			name: "SliceOfStrings",
 			in: map[string]interface{}{
 				"key": []interface{}{"value1", "value2"},
@@ -278,6 +294,12 @@ func TestErrors(t *testing.T) {
 			name: "Map2String",
 			in:   map[string]interface{}{"key": map[string]interface{}{}},
 			out:  &struct{ Key string }{},
+			err:  i2s.ErrMismatchedTypes,
+		},
+		{
+			name: "Map2Map",
+			in:   map[string]interface{}{"key": "value"},
+			out:  &map[string]string{},
 			err:  i2s.ErrMismatchedTypes,
 		},
 		{

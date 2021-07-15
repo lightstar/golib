@@ -127,6 +127,11 @@ func (c *Convertor) processBool(dataValue reflect.Value, outValue reflect.Value)
 }
 
 func (c *Convertor) processMap(dataValue reflect.Value, outValue reflect.Value) error {
+	if outValue.Kind() == reflect.Map && outValue.Type().Elem().Kind() == dataValue.Type().Elem().Kind() {
+		outValue.Set(dataValue)
+		return nil
+	}
+
 	if outValue.Kind() != reflect.Struct {
 		return ErrMismatchedTypes
 	}
