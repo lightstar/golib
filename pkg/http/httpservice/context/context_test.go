@@ -20,7 +20,7 @@ import (
 func TestContext(t *testing.T) {
 	logger := log.NewNop()
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", "/", strings.NewReader(`{"message":"test"}`))
+	req := httptest.NewRequest(http.MethodGet, "/", strings.NewReader(`{"message":"test"}`))
 	params := NewParams()
 
 	ctx := context.New(logger)
@@ -69,7 +69,7 @@ func TestContext(t *testing.T) {
 func TestContextEncodeError(t *testing.T) {
 	logger := log.NewNop()
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", "/", nil)
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
 
 	ctx := context.New(logger)
 
@@ -89,7 +89,7 @@ func TestContextDecodeError(t *testing.T) {
 	logger := log.NewNop()
 
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", "/", nil)
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
 
 	ctx := context.New(logger)
 

@@ -24,7 +24,7 @@ type TestError struct {
 	wrapped bool
 }
 
-// nolint: funlen // tests slice is too long to pass that linter
+//nolint:funlen // tests slice is too long to pass that linter
 func TestConvert(t *testing.T) {
 	convertor := i2s.Instance()
 

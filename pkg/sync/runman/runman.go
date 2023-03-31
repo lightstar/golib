@@ -3,7 +3,8 @@
 // You can also cancel them all prematurely by canceling passed context.
 //
 // Typical usage:
-//      runman.New(runner1, runner2, runner3).Run(ctx)
+//
+//	runman.New(runner1, runner2, runner3).Run(ctx)
 package runman
 
 import (

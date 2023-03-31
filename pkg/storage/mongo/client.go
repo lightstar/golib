@@ -1,18 +1,19 @@
 // Package mongo provides convenient API to mongodb. It uses mongo official driver undercover.
 //
 // Typical simplified usage:
-//      client := mongo.MustNewClient(mongo.WithAddress("127.0.0.1:27017"))
-//      defer client.Close()
 //
-//      if err := client.Ping(); err != nil {
-//          ...
-//      }
+//	client := mongo.MustNewClient(mongo.WithAddress("127.0.0.1:27017"))
+//	defer client.Close()
 //
-//      session := client.Session(ctx, dbName, collectionName)
-//      count, err := session.Find(mongo.Data{}, &entities)
-//      if err != nil {
-//          ...
-//      }
+//	if err := client.Ping(); err != nil {
+//	    ...
+//	}
+//
+//	session := client.Session(ctx, dbName, collectionName)
+//	count, err := session.Find(mongo.Data{}, &entities)
+//	if err != nil {
+//	    ...
+//	}
 package mongo
 
 import (

@@ -31,11 +31,7 @@ func TestMultiCall(t *testing.T) {
 			return err
 		}
 
-		if err := multiCall.Set("test2", "something2"); err != nil {
-			return err
-		}
-
-		return nil
+		return multiCall.Set("test2", "something2")
 	})
 
 	require.False(t, reply.IsError())
@@ -65,11 +61,7 @@ func TestMultiCallTransaction(t *testing.T) {
 			return err
 		}
 
-		if err := multiCall.Set("test2", "something2"); err != nil {
-			return err
-		}
-
-		return nil
+		return multiCall.Set("test2", "something2")
 	})
 
 	require.False(t, reply.IsError())
@@ -86,11 +78,7 @@ func TestMultiCallSetError(t *testing.T) {
 		Once()
 
 	reply := helper.conn.MultiCall(func(multiCall redis.MultiCall) error {
-		if err := multiCall.Set("test", "something"); err != nil {
-			return err
-		}
-
-		return nil
+		return multiCall.Set("test", "something")
 	})
 
 	require.True(t, reply.IsError())
@@ -110,11 +98,7 @@ func TestMultiCallFlushError(t *testing.T) {
 		Once()
 
 	reply := helper.conn.MultiCall(func(multiCall redis.MultiCall) error {
-		if err := multiCall.Set("test", "something"); err != nil {
-			return err
-		}
-
-		return nil
+		return multiCall.Set("test", "something")
 	})
 
 	require.True(t, reply.IsError())
@@ -137,11 +121,7 @@ func TestMultiCallReceiveError(t *testing.T) {
 		Once()
 
 	reply := helper.conn.MultiCall(func(multiCall redis.MultiCall) error {
-		if err := multiCall.Set("test", "something"); err != nil {
-			return err
-		}
-
-		return nil
+		return multiCall.Set("test", "something")
 	})
 
 	require.True(t, reply.IsError())
@@ -161,11 +141,7 @@ func TestMultiCallTransactionMultiError(t *testing.T) {
 		Once()
 
 	reply := helper.conn.Transaction(func(multiCall redis.MultiCall) error {
-		if err := multiCall.Set("test", "something"); err != nil {
-			return err
-		}
-
-		return nil
+		return multiCall.Set("test", "something")
 	})
 
 	require.True(t, reply.IsError())
@@ -188,11 +164,7 @@ func TestMultiCallTransactionSetError(t *testing.T) {
 		Once()
 
 	reply := helper.conn.Transaction(func(multiCall redis.MultiCall) error {
-		if err := multiCall.Set("test", "something"); err != nil {
-			return err
-		}
-
-		return nil
+		return multiCall.Set("test", "something")
 	})
 
 	require.True(t, reply.IsError())
@@ -215,11 +187,7 @@ func TestMultiCallTransactionExecError(t *testing.T) {
 		Once()
 
 	reply := helper.conn.Transaction(func(multiCall redis.MultiCall) error {
-		if err := multiCall.Set("test", "something"); err != nil {
-			return err
-		}
-
-		return nil
+		return multiCall.Set("test", "something")
 	})
 
 	require.True(t, reply.IsError())

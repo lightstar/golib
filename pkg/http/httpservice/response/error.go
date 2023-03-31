@@ -1,6 +1,6 @@
 package response
 
-// nolint: gochecknoglobals // these are some commonly-used error responses
+//nolint:gochecknoglobals // these are some commonly-used error responses
 var (
 	// Unauthorized error response is supposed to be sent to the client on unauthorized error.
 	Unauthorized = Error{Error: "unauthorized"}

@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-// nolint: gochecknoglobals // this is commonly-used encoder as global variable
+//nolint:gochecknoglobals // this is commonly-used encoder as global variable
 var (
 	// Plain encoder writes provided data into response as plain text.
 	Plain = Func(encodePlain)

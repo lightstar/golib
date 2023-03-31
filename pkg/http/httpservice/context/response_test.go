@@ -23,7 +23,7 @@ type Test struct {
 	response string
 }
 
-// nolint: funlen // tests slice is too long to pass that linter
+//nolint:funlen // tests slice is too long to pass that linter
 func TestResponse(t *testing.T) {
 	logger := log.NewNop()
 
@@ -124,7 +124,7 @@ func TestResponse(t *testing.T) {
 		func(test Test) {
 			t.Run(test.name, func(t *testing.T) {
 				rec := httptest.NewRecorder()
-				req := httptest.NewRequest("GET", "/", nil)
+				req := httptest.NewRequest(http.MethodGet, "/", nil)
 
 				ctx := context.New(logger)
 
@@ -154,7 +154,7 @@ func TestResponseEncodeError(t *testing.T) {
 	)
 
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", "/", nil)
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
 
 	ctx := context.New(logger)
 

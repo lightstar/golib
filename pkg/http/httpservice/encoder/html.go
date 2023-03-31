@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-// nolint: gochecknoglobals // this is commonly-used encoder as global variable
+//nolint:gochecknoglobals // this is commonly-used encoder as global variable
 var (
 	// HTML encoder writes provided data into response as html text.
 	HTML = Func(encodeHTML)

@@ -1,13 +1,14 @@
 // Package grpcserver provides API to grpc server with graceful shutdown.
 //
 // Typical usage:
-//      grpcserver.New(
-//          httpserver.WithName("my-server"),
-//          httpserver.WithAddress("127.0.0.1:8080"),
-//          httpserver.WithRegisterFn(func(s *grpc.Server) {
-//              // Register your service here
-//          }),
-//      ).Run(ctx)
+//
+//	grpcserver.New(
+//	    httpserver.WithName("my-server"),
+//	    httpserver.WithAddress("127.0.0.1:8080"),
+//	    httpserver.WithRegisterFn(func(s *grpc.Server) {
+//	        // Register your service here
+//	    }),
+//	).Run(ctx)
 package grpcserver
 
 import (

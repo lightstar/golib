@@ -7,17 +7,18 @@
 // Source and encoder can be defined via environment variables: CONFIG_FILE, CONFIG_ETCD_ENDPOINTS, CONFIG_ETCD_KEY and
 // CONFIG_ENCODER.
 // So typical usage in most situations will be such as that:
-//      cfg := config.Must(config.NewFromEnv())
 //
-//      err = cfg.Get(&myStructure)
-//      if err != nil {
-//          panic(err)
-//      }
+//	cfg := config.Must(config.NewFromEnv())
 //
-//      err = cfg.GetByKey("myKey", &myStructure)
-//      if err != nil {
-//          panic(err)
-//      }
+//	err = cfg.Get(&myStructure)
+//	if err != nil {
+//	    panic(err)
+//	}
+//
+//	err = cfg.GetByKey("myKey", &myStructure)
+//	if err != nil {
+//	    panic(err)
+//	}
 package config
 
 import (
@@ -59,7 +60,8 @@ func NewFromRaw(data map[string]interface{}) *Config {
 
 // Must function panics on any error that can rise after creating configuration service.
 // Use this like that:
-//      cfg := config.Must(config.NewFromBytes(...))
+//
+//	cfg := config.Must(config.NewFromBytes(...))
 func Must(config *Config, err error) *Config {
 	if err != nil {
 		panic(err)
@@ -82,29 +84,29 @@ func (config *Config) GetRawByKey(key string) (interface{}, error) {
 		return config.data, nil
 	}
 
-	var in interface{}
+	var value interface{}
 	var ok bool
 
 	valueElem := config.data
 	keySlice := strings.Split(key, ".")
 
-	for i, keyElem := range keySlice {
+	for index, keyElem := range keySlice {
 		if keyElem == "" {
-			in = valueElem
-		} else if in, ok = valueElem[keyElem]; !ok {
+			value = valueElem
+		} else if value, ok = valueElem[keyElem]; !ok {
 			return nil, ErrNoSuchKey
 		}
 
-		if i+1 < len(keySlice) {
-			if inAsMap, ok := in.(map[string]interface{}); ok {
-				valueElem = inAsMap
+		if index+1 < len(keySlice) {
+			if valueAsMap, ok := value.(map[string]interface{}); ok {
+				valueElem = valueAsMap
 			} else {
 				return nil, ErrNoSuchKey
 			}
 		}
 	}
 
-	return in, nil
+	return value, nil
 }
 
 // Get method fills structure that 'out' parameter points to with all configuration data.

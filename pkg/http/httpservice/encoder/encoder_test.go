@@ -22,6 +22,8 @@ func TestHTMLEncoder(t *testing.T) {
 }
 
 func testStringEncoder(t *testing.T, enc encoder.Encoder, data string, contentType string) {
+	t.Helper()
+
 	testEncoder(t, enc, data, contentType, data)
 	testEncoder(t, enc, []byte(data), contentType, data)
 	testEncoder(t, enc, errors.New(data), contentType, data)

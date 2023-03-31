@@ -533,7 +533,8 @@ func (conn *Conn) ZRangeByScoreWithLimit(
 // ZRangeByScoreWithScoresWithLimit method sends ZRANGEBYSCORE command with WITHSCORES and LIMIT modifiers to the redis
 // server and waits for the reply.
 func (conn *Conn) ZRangeByScoreWithScoresWithLimit(key string, min interface{}, max interface{}, offset int64,
-	count int64) Reply {
+	count int64,
+) Reply {
 	return conn.Do("ZRANGEBYSCORE", key, min, max, "WITHSCORES", "LIMIT", offset, count)
 }
 

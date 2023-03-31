@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// nolint: gochecknoglobals // this is commonly-used decoder as global variable
+//nolint:gochecknoglobals // this is commonly-used decoder as global variable
 var (
 	// JSON decoder treats request body as json.
 	JSON = Func(decodeJSON)

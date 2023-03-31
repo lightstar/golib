@@ -32,7 +32,7 @@ func (conn *MockConn) Err() error {
 }
 
 // Do method mocks sending command to the redis server and waiting for the reply.
-func (conn *MockConn) Do(commandName string, params ...interface{}) (reply interface{}, err error) {
+func (conn *MockConn) Do(commandName string, params ...interface{}) (interface{}, error) {
 	args := conn.Called(commandName, params)
 	return args.Get(0), args.Error(1)
 }
@@ -50,7 +50,7 @@ func (conn *MockConn) Flush() error {
 }
 
 // Receive method mocks receiving reply from the redis server.
-func (conn *MockConn) Receive() (reply interface{}, err error) {
+func (conn *MockConn) Receive() (interface{}, error) {
 	args := conn.Called()
 	return args.Get(0), args.Error(1)
 }

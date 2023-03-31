@@ -5,13 +5,14 @@
 // Optionally you can set some custom processor that will be called continuously with provided delay.
 //
 // Typical usage:
-//      // ... Setup any services you need and run them as goroutines
-//      daemon.New(
-//          daemon.WithName("my-daemon"),
-//          daemon.WithDelay(1000),
-//          daemon.WithProcessor(myProcessor),
-//      ).Run(ctx)
-//      // ... Shutdown your services and free resources
+//
+//	// ... Setup any services you need and run them as goroutines
+//	daemon.New(
+//	    daemon.WithName("my-daemon"),
+//	    daemon.WithDelay(1000),
+//	    daemon.WithProcessor(myProcessor),
+//	).Run(ctx)
+//	// ... Shutdown your services and free resources
 package daemon
 
 import (

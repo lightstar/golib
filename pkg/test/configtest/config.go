@@ -30,14 +30,14 @@ func (config *Config) GetByKey(key string, out interface{}) error {
 		return ErrNoData
 	}
 
-	var in interface{}
+	var value interface{}
 	var ok bool
 
-	if in, ok = config.data[key]; !ok {
+	if value, ok = config.data[key]; !ok {
 		return ErrNoSuchKey
 	}
 
-	if err, ok := in.(error); ok {
+	if err, ok := value.(error); ok {
 		return err
 	}
 
@@ -46,7 +46,7 @@ func (config *Config) GetByKey(key string, out interface{}) error {
 		return ErrOutputNotPointer
 	}
 
-	outValue.Elem().Set(reflect.ValueOf(in))
+	outValue.Elem().Set(reflect.ValueOf(value))
 
 	return nil
 }

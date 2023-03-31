@@ -14,14 +14,14 @@ type sampleDataType struct {
 	Food []string `bson:"food"`
 }
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var sampleData = sampleDataType{
 	Name: "George",
 	Age:  25,
 	Food: []string{"milk", "bread", "meat"},
 }
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var sampleData2 = sampleDataType{
 	Name: "Michael",
 	Age:  25,
@@ -141,20 +141,20 @@ func TestDeleteOne(t *testing.T) {
 	dataID, err := helper.session.InsertOne(sampleData)
 	require.NoError(t, err)
 
-	c, err := helper.session.Count(mongo.Data{{Key: "_id", Value: dataID}})
+	count, err := helper.session.Count(mongo.Data{{Key: "_id", Value: dataID}})
 
 	require.NoError(t, err)
-	require.Equal(t, int64(1), c)
+	require.Equal(t, int64(1), count)
 
-	c, err = helper.session.DeleteOne(mongo.Data{{Key: "_id", Value: dataID}})
-
-	require.NoError(t, err)
-	require.Equal(t, int64(1), c)
-
-	c, err = helper.session.Count(mongo.Data{{Key: "_id", Value: dataID}})
+	count, err = helper.session.DeleteOne(mongo.Data{{Key: "_id", Value: dataID}})
 
 	require.NoError(t, err)
-	require.Zero(t, c)
+	require.Equal(t, int64(1), count)
+
+	count, err = helper.session.Count(mongo.Data{{Key: "_id", Value: dataID}})
+
+	require.NoError(t, err)
+	require.Zero(t, count)
 }
 
 func TestDeleteOneError(t *testing.T) {
@@ -171,18 +171,18 @@ func TestCount(t *testing.T) {
 	helper := newSessionHelper(t)
 	defer helper.Close(t)
 
-	c, err := helper.session.Count(mongo.Data{})
+	count, err := helper.session.Count(mongo.Data{})
 
 	require.NoError(t, err)
-	require.Zero(t, c)
+	require.Zero(t, count)
 
 	dataID, err := helper.session.InsertOne(sampleData)
 	require.NoError(t, err)
 
-	c, err = helper.session.Count(mongo.Data{{Key: "_id", Value: dataID}})
+	count, err = helper.session.Count(mongo.Data{{Key: "_id", Value: dataID}})
 
 	require.NoError(t, err)
-	require.Equal(t, int64(1), c)
+	require.Equal(t, int64(1), count)
 }
 
 func TestCountError(t *testing.T) {
@@ -236,26 +236,26 @@ func TestCountAll(t *testing.T) {
 	helper := newSessionHelper(t)
 	defer helper.Close(t)
 
-	c, err := helper.session.CountAll()
+	count, err := helper.session.CountAll()
 
 	require.NoError(t, err)
-	require.Zero(t, c)
+	require.Zero(t, count)
 
 	_, err = helper.session.InsertOne(sampleData)
 	require.NoError(t, err)
 
-	c, err = helper.session.CountAll()
+	count, err = helper.session.CountAll()
 
 	require.NoError(t, err)
-	require.Equal(t, int64(1), c)
+	require.Equal(t, int64(1), count)
 
 	_, err = helper.session.InsertOne(sampleData2)
 	require.NoError(t, err)
 
-	c, err = helper.session.CountAll()
+	count, err = helper.session.CountAll()
 
 	require.NoError(t, err)
-	require.Equal(t, int64(2), c)
+	require.Equal(t, int64(2), count)
 }
 
 func TestInsertMany(t *testing.T) {
@@ -286,18 +286,18 @@ func TestFind(t *testing.T) {
 	defer helper.Close(t)
 
 	var dataSlice []sampleDataType
-	c, err := helper.session.Find(mongo.Data{{Key: "age", Value: 25}}, &dataSlice)
+	count, err := helper.session.Find(mongo.Data{{Key: "age", Value: 25}}, &dataSlice)
 
 	require.NoError(t, err)
-	require.Zero(t, c)
+	require.Zero(t, count)
 
 	_, err = helper.session.InsertMany([]interface{}{sampleData, sampleData2})
 	require.NoError(t, err)
 
-	c, err = helper.session.Find(mongo.Data{{Key: "age", Value: 25}}, &dataSlice)
+	count, err = helper.session.Find(mongo.Data{{Key: "age", Value: 25}}, &dataSlice)
 
 	require.NoError(t, err)
-	require.Equal(t, int64(2), c)
+	require.Equal(t, int64(2), count)
 	require.Len(t, dataSlice, 2)
 	require.Equal(t, &sampleData, &dataSlice[0])
 	require.Equal(t, &sampleData2, &dataSlice[1])
@@ -429,20 +429,20 @@ func TestDeleteMany(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, dataIDs, 2)
 
-	c, err := helper.session.DeleteMany(mongo.Data{{Key: "age", Value: 25}})
+	count, err := helper.session.DeleteMany(mongo.Data{{Key: "age", Value: 25}})
 
 	require.NoError(t, err)
-	require.Equal(t, int64(2), c)
+	require.Equal(t, int64(2), count)
 
-	c, err = helper.session.Count(mongo.Data{{Key: "_id", Value: dataIDs[0]}})
-
-	require.NoError(t, err)
-	require.Zero(t, c)
-
-	c, err = helper.session.Count(mongo.Data{{Key: "_id", Value: dataIDs[1]}})
+	count, err = helper.session.Count(mongo.Data{{Key: "_id", Value: dataIDs[0]}})
 
 	require.NoError(t, err)
-	require.Zero(t, c)
+	require.Zero(t, count)
+
+	count, err = helper.session.Count(mongo.Data{{Key: "_id", Value: dataIDs[1]}})
+
+	require.NoError(t, err)
+	require.Zero(t, count)
 }
 
 func TestDeleteManyError(t *testing.T) {

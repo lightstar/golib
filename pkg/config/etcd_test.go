@@ -56,6 +56,8 @@ func TestEtcdErrors(t *testing.T) {
 }
 
 func setupEtcd(t *testing.T) {
+	t.Helper()
+
 	client := etcdClient(t)
 	defer client.Close()
 
@@ -67,6 +69,8 @@ func setupEtcd(t *testing.T) {
 }
 
 func setupEtcdWrong(t *testing.T) {
+	t.Helper()
+
 	client := etcdClient(t)
 	defer client.Close()
 
@@ -78,6 +82,8 @@ func setupEtcdWrong(t *testing.T) {
 }
 
 func cleanEtcd(t *testing.T) {
+	t.Helper()
+
 	client := etcdClient(t)
 	defer client.Close()
 
@@ -89,6 +95,8 @@ func cleanEtcd(t *testing.T) {
 }
 
 func etcdClient(t *testing.T) *clientv3.Client {
+	t.Helper()
+
 	client, err := clientv3.New(clientv3.Config{
 		Endpoints:   strings.Split(os.Getenv("TEST_CONFIG_ETCD_ENDPOINTS"), ","),
 		DialTimeout: time.Second,

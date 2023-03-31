@@ -5,23 +5,23 @@ import (
 	"io"
 )
 
-func writeString(w io.Writer, data interface{}) error {
-	var b []byte
+func writeString(writer io.Writer, data interface{}) error {
+	var dataBytes []byte
 
 	switch dataTyped := data.(type) {
 	case []byte:
-		b = dataTyped
+		dataBytes = dataTyped
 	case string:
-		b = []byte(dataTyped)
+		dataBytes = []byte(dataTyped)
 	case fmt.Stringer:
-		b = []byte(dataTyped.String())
+		dataBytes = []byte(dataTyped.String())
 	case error:
-		b = []byte(dataTyped.Error())
+		dataBytes = []byte(dataTyped.Error())
 	default:
-		b = []byte(fmt.Sprintf("%v", data))
+		dataBytes = []byte(fmt.Sprintf("%v", data))
 	}
 
-	_, err := w.Write(b)
+	_, err := writer.Write(dataBytes)
 
 	return err
 }

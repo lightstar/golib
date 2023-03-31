@@ -9,7 +9,7 @@ import (
 // Recover middleware converts all panics into errors.
 func Recover() httpservice.MiddlewareFunc {
 	return func(handler httpservice.HandlerFunc) httpservice.HandlerFunc {
-		return func(c *context.Context) (err error) {
+		return func(ctx *context.Context) (err error) {
 			defer func() {
 				if rcv := recover(); rcv != nil {
 					defer func() {
@@ -20,7 +20,7 @@ func Recover() httpservice.MiddlewareFunc {
 				}
 			}()
 
-			return handler(c)
+			return handler(ctx)
 		}
 	}
 }

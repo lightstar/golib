@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/lightstar/golib/pkg/config"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 const (
@@ -28,11 +29,12 @@ type Option func(*Config) error
 // WithConfig option retrieves configuration from provided configuration service.
 //
 // Example JSON configuration with all possible fields (if some are not present, defaults will be used):
-//     {
-//         "address": "127.0.0.1:27017",
-//         "connectTimeout": 5,
-//         "socketTimeout": 10
-//     }
+//
+//	{
+//	    "address": "127.0.0.1:27017",
+//	    "connectTimeout": 5,
+//	    "socketTimeout": 10
+//	}
 func WithConfig(service config.Interface, key string) Option {
 	return func(cfg *Config) error {
 		data := struct {
@@ -46,7 +48,7 @@ func WithConfig(service config.Interface, key string) Option {
 		}
 
 		err := service.GetByKey(key, &data)
-		if err != nil && err != config.ErrNoSuchKey {
+		if err != nil && !errors.Is(err, config.ErrNoSuchKey) {
 			return err
 		}
 

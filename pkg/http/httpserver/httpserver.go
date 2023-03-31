@@ -1,16 +1,18 @@
 // Package httpserver provides API to standard http server with graceful shutdown.
 //
 // Typical usage:
-//      httpserver.New(
-//          httpserver.WithName("my-server"),
-//          httpserver.WithAddress("127.0.0.1:8080"),
-//          httpserver.WithHandler(myHandler),
-//      ).Run(ctx)
+//
+//	httpserver.New(
+//	    httpserver.WithName("my-server"),
+//	    httpserver.WithAddress("127.0.0.1:8080"),
+//	    httpserver.WithHandler(myHandler),
+//	).Run(ctx)
 package httpserver
 
 import (
 	"context"
 	"net/http"
+	"time"
 
 	"github.com/lightstar/golib/pkg/log"
 )
@@ -41,8 +43,11 @@ func New(opts ...Option) (*Server, error) {
 	}
 
 	server := &http.Server{
-		Addr:    config.address,
-		Handler: config.handler,
+		Addr:              config.address,
+		Handler:           config.handler,
+		ReadHeaderTimeout: ReadHeaderTimeout * time.Second,
+		ReadTimeout:       ReadTimeout * time.Second,
+		WriteTimeout:      WriteTimeout * time.Second,
 	}
 
 	return &Server{

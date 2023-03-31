@@ -1,7 +1,6 @@
 package context_test
 
-type Params struct {
-}
+type Params struct{}
 
 func NewParams() *Params {
 	return &Params{}

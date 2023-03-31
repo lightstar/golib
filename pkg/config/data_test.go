@@ -18,7 +18,7 @@ type childProfile struct {
 	Age    int8
 }
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var sampleConfigDataJSON = []byte(`{
   "name": "Peter",
   "profile": {
@@ -32,7 +32,7 @@ var sampleConfigDataJSON = []byte(`{
   }
 }`)
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var sampleConfigDataYAML = []byte(`
 name: Peter
 profile:
@@ -48,7 +48,7 @@ profile:
       age: 12
 `)
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var sampleConfigDataTOML = []byte(`
 name = "Peter"
 
@@ -68,22 +68,22 @@ weight = 12.2
 age = 12
 `)
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var sampleConfigDataWrongJSON = []byte(`{
   "name": "Peter",
 `)
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var sampleConfigDataWrongYAML = []byte(`
 name: - Peter
 `)
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var sampleConfigDataWrongTOML = []byte(`
 name = Peter
 `)
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var expectedSampleConfig = sampleConfigType{
 	Name: "Peter",
 	Profile: userProfile{
@@ -97,7 +97,7 @@ var expectedSampleConfig = sampleConfigType{
 	},
 }
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var expectedSampleRawDataJSON = map[string]interface{}{
 	"name": "Peter",
 	"profile": map[string]interface{}{
@@ -111,7 +111,7 @@ var expectedSampleRawDataJSON = map[string]interface{}{
 	},
 }
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var expectedSampleRawDataYAML = map[string]interface{}{
 	"name": "Peter",
 	"profile": map[string]interface{}{
@@ -125,7 +125,7 @@ var expectedSampleRawDataYAML = map[string]interface{}{
 	},
 }
 
-// nolint: gochecknoglobals // this variable is actually read-only so it's ok to use it.
+//nolint:gochecknoglobals // this variable is actually read-only, so it's ok to use it.
 var expectedSampleRawDataTOML = map[string]interface{}{
 	"name": "Peter",
 	"profile": map[string]interface{}{

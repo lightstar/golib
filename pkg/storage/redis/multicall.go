@@ -33,7 +33,7 @@ func (multiCall MultiCall) Send(commandName string, args ...interface{}) error {
 }
 
 // process method wraps provided function for bulk or transaction processing.
-func (multiCall MultiCall) process(f MultiCallFunc) Reply {
+func (multiCall MultiCall) process(fn MultiCallFunc) Reply {
 	var err error
 
 	if multiCall.transaction {
@@ -43,7 +43,7 @@ func (multiCall MultiCall) process(f MultiCallFunc) Reply {
 		}
 	}
 
-	err = f(multiCall)
+	err = fn(multiCall)
 	if err != nil {
 		return Reply{err: err}
 	}

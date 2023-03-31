@@ -80,6 +80,19 @@ func TestFatal(t *testing.T) {
 		`github\.com/lightstar/golib/pkg/log_test\.TestFatal\..+\n`, stderr.String())
 }
 
+func TestNop(t *testing.T) {
+	logger := log.NewNop()
+	defer logger.Sync()
+
+	logger.Debug("Test debug message")
+	logger.Info("Test info message")
+	logger.Error("Test error message")
+
+	require.Panics(t, func() {
+		logger.Fatal("Test fatal message")
+	})
+}
+
 func TestConfig(t *testing.T) {
 	stdout := iotest.NewBuffer()
 	stderr := iotest.NewBuffer()

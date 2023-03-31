@@ -1,6 +1,6 @@
 package response
 
-// nolint: gochecknoglobals // these are some commonly-used message responses
+//nolint:gochecknoglobals // these are some commonly-used message responses
 var (
 	// Ok response is supposed to be sent to the client on success.
 	Ok = Message{Message: "OK"}

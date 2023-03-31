@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/lightstar/golib/pkg/config"
+	"github.com/lightstar/golib/pkg/errors"
 	"github.com/lightstar/golib/pkg/log"
 )
 
@@ -12,6 +13,12 @@ const (
 	DefAddress = "127.0.0.1:8080"
 	// DefName is the default server's name.
 	DefName = "http-server"
+	// ReadHeaderTimeout is maximum time in seconds to read http header.
+	ReadHeaderTimeout = 2
+	// ReadTimeout is maximum time in seconds to read request.
+	ReadTimeout = 3
+	// WriteTimeout is maximum time in seconds to write request response.
+	WriteTimeout = 5
 )
 
 // Config structure with server configuration. Shouldn't be created manually.
@@ -28,10 +35,11 @@ type Option func(*Config) error
 // WithConfig option retrieves configuration from provided configuration service.
 //
 // Example JSON configuration with all possible fields (if some are not present, defaults will be used):
-//     {
-//         "name": "server-name",
-//         "address": "127.0.0.1:8080"
-//     }
+//
+//	{
+//	    "name": "server-name",
+//	    "address": "127.0.0.1:8080"
+//	}
 func WithConfig(service config.Interface, key string) Option {
 	return func(cfg *Config) error {
 		data := struct {
@@ -43,7 +51,7 @@ func WithConfig(service config.Interface, key string) Option {
 		}
 
 		err := service.GetByKey(key, &data)
-		if err != nil && err != config.ErrNoSuchKey {
+		if err != nil && !errors.Is(err, config.ErrNoSuchKey) {
 			return err
 		}
 

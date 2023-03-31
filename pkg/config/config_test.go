@@ -49,7 +49,10 @@ func TestMust(t *testing.T) {
 	})
 }
 
+//nolint:forcetypeassert // we know what is inside expectedRawData structure. if not - test will fail anyway.
 func testSampleConfig(t *testing.T, cfg *config.Config, expectedRawData map[string]interface{}) {
+	t.Helper()
+
 	require.Equal(t, expectedRawData, cfg.GetRaw())
 
 	rawDataByEmptyKey, err := cfg.GetRawByKey("")

@@ -4,6 +4,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/lightstar/golib/pkg/config"
+	"github.com/lightstar/golib/pkg/errors"
 	"github.com/lightstar/golib/pkg/log"
 )
 
@@ -31,10 +32,11 @@ type RegisterFn func(*grpc.Server)
 // WithConfig option retrieves configuration from provided configuration service.
 //
 // Example JSON configuration with all possible fields (if some are not present, defaults will be used):
-//     {
-//         "name": "server-name",
-//         "address": "127.0.0.1:50051"
-//     }
+//
+//	{
+//	    "name": "server-name",
+//	    "address": "127.0.0.1:50051"
+//	}
 func WithConfig(service config.Interface, key string) Option {
 	return func(cfg *Config) error {
 		data := struct {
@@ -46,7 +48,7 @@ func WithConfig(service config.Interface, key string) Option {
 		}
 
 		err := service.GetByKey(key, &data)
-		if err != nil && err != config.ErrNoSuchKey {
+		if err != nil && !errors.Is(err, config.ErrNoSuchKey) {
 			return err
 		}
 

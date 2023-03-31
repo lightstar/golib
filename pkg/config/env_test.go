@@ -14,8 +14,8 @@ func TestEnvJSON(t *testing.T) {
 	iotest.WriteFile(t, testConfigPath, sampleConfigDataJSON)
 	defer iotest.RemoveFile(t, testConfigPath)
 
-	os.Setenv("CONFIG_FILE", testConfigPath)
-	os.Unsetenv("CONFIG_ENCODER")
+	t.Setenv("CONFIG_FILE", testConfigPath)
+	t.Setenv("CONFIG_ENCODER", "")
 
 	cfg, err := config.NewFromEnv()
 	require.NoError(t, err)
@@ -27,8 +27,8 @@ func TestEnvYAML(t *testing.T) {
 	iotest.WriteFile(t, testConfigPath, sampleConfigDataYAML)
 	defer iotest.RemoveFile(t, testConfigPath)
 
-	os.Setenv("CONFIG_FILE", testConfigPath)
-	os.Setenv("CONFIG_ENCODER", "yaml")
+	t.Setenv("CONFIG_FILE", testConfigPath)
+	t.Setenv("CONFIG_ENCODER", "yaml")
 
 	cfg, err := config.NewFromEnv()
 	require.NoError(t, err)
@@ -40,8 +40,8 @@ func TestEnvTOML(t *testing.T) {
 	iotest.WriteFile(t, testConfigPath, sampleConfigDataTOML)
 	defer iotest.RemoveFile(t, testConfigPath)
 
-	os.Setenv("CONFIG_FILE", testConfigPath)
-	os.Setenv("CONFIG_ENCODER", "toml")
+	t.Setenv("CONFIG_FILE", testConfigPath)
+	t.Setenv("CONFIG_ENCODER", "toml")
 
 	cfg, err := config.NewFromEnv()
 	require.NoError(t, err)
@@ -59,10 +59,10 @@ func TestEnvEtcd(t *testing.T) {
 	setupEtcd(t)
 	defer cleanEtcd(t)
 
-	os.Unsetenv("CONFIG_FILE")
-	os.Setenv("CONFIG_ETCD_ENDPOINTS", os.Getenv("TEST_CONFIG_ETCD_ENDPOINTS"))
-	os.Setenv("CONFIG_ETCD_KEY", etcdKey)
-	os.Setenv("CONFIG_ENCODER", "json")
+	t.Setenv("CONFIG_FILE", "")
+	t.Setenv("CONFIG_ETCD_ENDPOINTS", os.Getenv("TEST_CONFIG_ETCD_ENDPOINTS"))
+	t.Setenv("CONFIG_ETCD_KEY", etcdKey)
+	t.Setenv("CONFIG_ENCODER", "json")
 
 	cfg, err := config.NewFromEnv()
 	require.NoError(t, err)
@@ -71,16 +71,16 @@ func TestEnvEtcd(t *testing.T) {
 }
 
 func TestEnvErrors(t *testing.T) {
-	os.Setenv("CONFIG_FILE", testConfigPath)
-	os.Setenv("CONFIG_ENCODER", "unknown")
+	t.Setenv("CONFIG_FILE", testConfigPath)
+	t.Setenv("CONFIG_ENCODER", "unknown")
 
 	_, err := config.NewFromEnv()
 	require.Error(t, err)
 
-	os.Unsetenv("CONFIG_FILE")
-	os.Unsetenv("CONFIG_ETCD_ENDPOINTS")
-	os.Unsetenv("CONFIG_ETCD_KEY")
-	os.Unsetenv("CONFIG_ENCODER")
+	t.Setenv("CONFIG_FILE", "")
+	t.Setenv("CONFIG_ETCD_ENDPOINTS", "")
+	t.Setenv("CONFIG_ETCD_KEY", "")
+	t.Setenv("CONFIG_ENCODER", "")
 
 	_, err = config.NewFromEnv()
 	require.Error(t, err)

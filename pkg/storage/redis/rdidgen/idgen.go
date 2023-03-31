@@ -1,15 +1,16 @@
 // Package rdidgen provides implementation of id generation using redis server.
 //
 // Typical usage:
-//      idgen := rdidgen.MustNew(
-//          rdidgen.WithRedisClient(client),
-//          rdidgen.WithKeyPrefix("object"),
-//      )
 //
-//      id, err := idgen.NextID()
-//      if err != nil {
-//          ...
-//      }
+//	idgen := rdidgen.MustNew(
+//	    rdidgen.WithRedisClient(client),
+//	    rdidgen.WithKeyPrefix("object"),
+//	)
+//
+//	id, err := idgen.NextID()
+//	if err != nil {
+//	    ...
+//	}
 package rdidgen
 
 import "github.com/lightstar/golib/pkg/storage/redis"

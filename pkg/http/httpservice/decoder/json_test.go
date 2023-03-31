@@ -2,6 +2,7 @@ package decoder_test
 
 import (
 	"bytes"
+	"net/http"
 	"net/http/httptest"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 
 func TestJsonDecoder(t *testing.T) {
 	body := bytes.NewBuffer([]byte(`{"key":"value", "number": 5}`))
-	req := httptest.NewRequest("GET", "/", body)
+	req := httptest.NewRequest(http.MethodGet, "/", body)
 
 	data := &struct {
 		Key    string `json:"key"`
@@ -33,7 +34,7 @@ func TestJsonDecoder(t *testing.T) {
 
 func TestJsonDecoderError(t *testing.T) {
 	body := bytes.NewBuffer([]byte(`{"key":"value",`))
-	req := httptest.NewRequest("GET", "/", body)
+	req := httptest.NewRequest(http.MethodGet, "/", body)
 
 	data := &struct {
 		Key    string

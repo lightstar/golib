@@ -6,6 +6,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 // Data type is used to provide filters in various mongodb commands.
@@ -65,7 +67,7 @@ func (session *Session) UpsertOne(filter Data, entity interface{}) (*mongo.Updat
 }
 
 // UpsertMany method updates list of entities in collection using filter. If nothing to update, new entity will be
-// inserted. On success it returns structure with update result.
+// inserted. On success, it returns structure with update result.
 func (session *Session) UpsertMany(filter Data, entity interface{}) (*mongo.UpdateResult, error) {
 	result, err := session.collection.UpdateMany(session.context, filter, bson.D{{Key: "$set", Value: entity}},
 		options.Update().SetUpsert(true))
@@ -76,7 +78,7 @@ func (session *Session) UpsertMany(filter Data, entity interface{}) (*mongo.Upda
 	return result, nil
 }
 
-// DeleteOne method deletes entity from collection using filter. On success it returns number of deleted entities
+// DeleteOne method deletes entity from collection using filter. On success, it returns number of deleted entities
 // (0 or 1).
 func (session *Session) DeleteOne(filter Data) (int64, error) {
 	result, err := session.collection.DeleteOne(session.context, filter)
@@ -119,11 +121,11 @@ func (session *Session) CountAll() (int64, error) {
 }
 
 // FindOne method retrieves one entity from collection using filter into entity parameter that must be a pointer to
-// appropriate structure. On success it returns number of retrieved entities.
+// appropriate structure. On success, it returns number of retrieved entities.
 func (session *Session) FindOne(filter Data, entity interface{}, opts ...*options.FindOneOptions) (int64, error) {
 	err := session.collection.FindOne(session.context, filter, opts...).Decode(entity)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {
+		if errors.Is(err, mongo.ErrNoDocuments) {
 			return 0, nil
 		}
 
@@ -134,7 +136,7 @@ func (session *Session) FindOne(filter Data, entity interface{}, opts ...*option
 }
 
 // Find method retrieves list of entities from collection using filter into entities parameter that must be a pointer to
-// a slice of appropriate structures. On success it returns number of retrieved entities.
+// a slice of appropriate structures. On success, it returns number of retrieved entities.
 func (session *Session) Find(filter Data, entities interface{}, opts ...*options.FindOptions) (int64, error) {
 	cursor, err := session.collection.Find(session.context, filter, opts...)
 	if err != nil {

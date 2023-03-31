@@ -1,13 +1,14 @@
 // Package redis provides convenient API to redis storage. It uses redigo library undercover.
 //
 // Typical simplified usage:
-//      client := redis.MustNewClient(redis.WithAddress("127.0.0.1:6379"))
-//      conn := client.Conn()
-//      defer conn.Close()
-//      value, err := conn.Get("key").String()
-//      if err != nil {
-//          ...
-//      }
+//
+//	client := redis.MustNewClient(redis.WithAddress("127.0.0.1:6379"))
+//	conn := client.Conn()
+//	defer conn.Close()
+//	value, err := conn.Get("key").String()
+//	if err != nil {
+//	    ...
+//	}
 package redis
 
 import (

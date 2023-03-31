@@ -3,19 +3,20 @@
 // new request.
 //
 // Typical usage:
-//      ctx := context.New(logger)
 //
-//      // ... Request comes
-//      ctx.Reset(w, r, params, enc, dec, action)
-//      if err := handler(ctx); err != nil {
-//          // Handle error
-//      }
+//	ctx := context.New(logger)
 //
-//      // ... Another request comes
-//      ctx.Reset(w, r, enc, dec, action)
-//      if err := handler(ctx); err != nil {
-//          // Handle error
-//      }
+//	// ... Request comes
+//	ctx.Reset(w, r, params, enc, dec, action)
+//	if err := handler(ctx); err != nil {
+//	    // Handle error
+//	}
+//
+//	// ... Another request comes
+//	ctx.Reset(w, r, enc, dec, action)
+//	if err := handler(ctx); err != nil {
+//	    // Handle error
+//	}
 package context
 
 import (

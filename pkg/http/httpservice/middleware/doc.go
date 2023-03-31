@@ -2,6 +2,7 @@
 // UseMiddleware and UseMiddlewareBefore methods of http service object.
 //
 // Typical usage:
-//      service.UseMiddleware(middleware.Recover)
-//      service.UseMiddleware(middleware.Log)
+//
+//	service.UseMiddleware(middleware.Recover)
+//	service.UseMiddleware(middleware.Log)
 package middleware

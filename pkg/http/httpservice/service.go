@@ -2,18 +2,19 @@
 // Service structure into your own specific service to reduce amount of written code.
 //
 // Typical simplified usage (in tandem with httpserver package):
-//      srv := httpservice.New(httpservice.WithLogger(logger))
 //
-//      srv.UseMiddleware(middleware.Recover)
-//      srv.UseMiddleware(middleware.Log)
+//	srv := httpservice.New(httpservice.WithLogger(logger))
 //
-//      srv.GET("/", "index", func (ctx *context.Context) error {
-//          // ... Handle request
-//      })
+//	srv.UseMiddleware(middleware.Recover)
+//	srv.UseMiddleware(middleware.Log)
 //
-//      // ... Define other routes
+//	srv.GET("/", "index", func (ctx *context.Context) error {
+//	    // ... Handle request
+//	})
 //
-//      httpserver.New(httpserver.WithHandler(srv)).Run(ctx)
+//	// ... Define other routes
+//
+//	httpserver.New(httpserver.WithHandler(srv)).Run(ctx)
 package httpservice
 
 import (
@@ -105,22 +106,24 @@ func (service *Service) Logger() log.Logger {
 
 // UseEncoder method applies provided encoder that will be used for each route defined after that.
 // Example:
-//      srv.UseEncoder(enc1)
-//      srv.GET(...) // will use encoder enc1
-//      srv.GET(...) // will use encoder enc1 too
-//      srv.UseEncoder(enc2)
-//      srv.GET(...) // will use encoder enc2
+//
+//	srv.UseEncoder(enc1)
+//	srv.GET(...) // will use encoder enc1
+//	srv.GET(...) // will use encoder enc1 too
+//	srv.UseEncoder(enc2)
+//	srv.GET(...) // will use encoder enc2
 func (service *Service) UseEncoder(enc encoder.Encoder) {
 	service.encoder = enc
 }
 
 // UseDecoder method applies provided decoder that will be used for each route defined after that.
 // Example:
-//      srv.UseDecoder(dec1)
-//      srv.GET(...) // will use decoder dec1
-//      srv.GET(...) // will use decoder dec1 too
-//      srv.UseDecoder(dec2)
-//      srv.GET(...) // will use decoder dec2
+//
+//	srv.UseDecoder(dec1)
+//	srv.GET(...) // will use decoder dec1
+//	srv.GET(...) // will use decoder dec1 too
+//	srv.UseDecoder(dec2)
+//	srv.GET(...) // will use decoder dec2
 func (service *Service) UseDecoder(dec decoder.Decoder) {
 	service.decoder = dec
 }

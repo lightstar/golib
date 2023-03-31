@@ -23,7 +23,7 @@ func TestLog(t *testing.T) {
 	)
 
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", "/", nil)
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
 
 	ctx := context.New(logger)
 	ctx.Reset(rec, req, nil, nil, nil, "some action")
@@ -32,6 +32,7 @@ func TestLog(t *testing.T) {
 		ctx.SetResult("some result")
 		ctx.Response().WriteHeader(http.StatusOK)
 		_, err := ctx.Response().Write([]byte("some response"))
+
 		return err
 	})(ctx)
 

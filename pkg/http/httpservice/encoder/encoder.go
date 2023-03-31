@@ -2,12 +2,13 @@
 // implementation into the context object when you reset it, and it will be used to encode response.
 //
 // Typical usage:
-//      enc := encoder.JSON
-//      ctx.Reset(..., enc, ...)
-//      // ...
-//      if err := ctx.Encode(w, http.StatusOK, data); err != nil {
-//          ctx.Logger().Error(err.Error())
-//      }
+//
+//	enc := encoder.JSON
+//	ctx.Reset(..., enc, ...)
+//	// ...
+//	if err := ctx.Encode(w, http.StatusOK, data); err != nil {
+//	    ctx.Logger().Error(err.Error())
+//	}
 package encoder
 
 import (

@@ -1,16 +1,18 @@
 // Package errors provides basic error primitive with optional stack trace and cause error.
 //
 // Examples of typical usages:
-//      err := errors.New("some message")
-//      err := errors.NewFmt("some message with param %s", myParam)
-//      err := errors.New("some error with stack trace and cause").WithStackTrace().WithCause(causeError)
+//
+//	err := errors.New("some message")
+//	err := errors.NewFmt("some message with param %s", myParam)
+//	err := errors.New("some error with stack trace and cause").WithStackTrace().WithCause(causeError)
 //
 // In non-trivial cases using subtypes is encouraged, such as:
-//      type MyError struct {
-//          *errors.Err
-//          MyField string
-//          MyOtherField int
-//      }
+//
+//	type MyError struct {
+//	    *errors.Err
+//	    MyField string
+//	    MyOtherField int
+//	}
 package errors
 
 import (
@@ -22,6 +24,8 @@ import (
 )
 
 // Err structure that implements error interface. Don't create it manually, use one of the functions down below.
+//
+//nolint:errname // this is special library error type
 type Err struct {
 	msg        string
 	cause      error
@@ -65,18 +69,18 @@ func (err *Err) Unwrap() error {
 }
 
 // Format method implements internal interface inside 'fmt' standard package.
-func (err *Err) Format(s fmt.State, verb rune) {
+func (err *Err) Format(state fmt.State, verb rune) {
 	switch verb {
 	case 'v':
-		_, _ = io.WriteString(s, err.msg)
+		_, _ = io.WriteString(state, err.msg)
 
-		if s.Flag('+') {
-			err.stackTrace.Format(s, verb)
+		if state.Flag('+') {
+			err.stackTrace.Format(state, verb)
 		}
 	case 's':
-		_, _ = io.WriteString(s, err.msg)
+		_, _ = io.WriteString(state, err.msg)
 	case 'q':
-		_, _ = fmt.Fprintf(s, "%q", err.msg)
+		_, _ = fmt.Fprintf(state, "%q", err.msg)
 	}
 }
 

@@ -35,6 +35,8 @@ func newSessionHelper(t *testing.T) *sessionHelper {
 }
 
 func (helper *sessionHelper) Close(t *testing.T) {
+	t.Helper()
+
 	err := helper.session.Drop()
 	require.NoError(t, err)
 
@@ -46,14 +48,14 @@ func (helper *sessionHelper) requireFindOne(t *testing.T, id interface{}, requir
 	t.Helper()
 
 	data := sampleDataType{}
-	c, err := helper.session.FindOne(mongo.Data{{Key: "_id", Value: id}}, &data)
+	count, err := helper.session.FindOne(mongo.Data{{Key: "_id", Value: id}}, &data)
 
 	require.NoError(t, err)
 
 	if requiredData == nil {
-		require.Equal(t, int64(0), c)
+		require.Equal(t, int64(0), count)
 	} else {
-		require.Equal(t, int64(1), c)
+		require.Equal(t, int64(1), count)
 		require.Equal(t, requiredData, &data)
 	}
 }

@@ -14,7 +14,7 @@ import (
 
 func TestRecover(t *testing.T) {
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", "/", nil)
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
 
 	ctx := context.New(log.NewNop())
 	ctx.Reset(rec, req, nil, nil, nil, "some action")
@@ -29,7 +29,7 @@ func TestRecover(t *testing.T) {
 
 func TestRecoverNoPanic(t *testing.T) {
 	rec := httptest.NewRecorder()
-	req := httptest.NewRequest("GET", "/", nil)
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
 
 	ctx := context.New(log.NewNop())
 	ctx.Reset(rec, req, nil, nil, nil, "some action")
@@ -38,6 +38,7 @@ func TestRecoverNoPanic(t *testing.T) {
 		ctx.SetResult("some result")
 		ctx.Response().WriteHeader(http.StatusOK)
 		_, err := ctx.Response().Write([]byte("some response"))
+
 		return err
 	})(ctx)
 

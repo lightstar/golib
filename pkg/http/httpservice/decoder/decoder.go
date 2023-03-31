@@ -2,12 +2,13 @@
 // implementation into the context object when you reset it, and it will be used to decode request data.
 //
 // Typical usage:
-//      dec := decoder.JSON
-//      ctx.Reset(..., dec, ...)
-//      // ...
-//      if err := ctx.Decode(r, &data); err != nil {
-//          ctx.BadRequestResponse(nil, err.Error())
-//      }
+//
+//	dec := decoder.JSON
+//	ctx.Reset(..., dec, ...)
+//	// ...
+//	if err := ctx.Decode(r, &data); err != nil {
+//	    ctx.BadRequestResponse(nil, err.Error())
+//	}
 package decoder
 
 import "net/http"

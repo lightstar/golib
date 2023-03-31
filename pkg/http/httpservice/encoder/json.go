@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// nolint: gochecknoglobals // this is commonly-used encoder as global variable
+//nolint:gochecknoglobals // this is commonly-used encoder as global variable
 var (
 	// JSON encoder writes provided data into response as json payload.
 	JSON = Func(encodeJSON)

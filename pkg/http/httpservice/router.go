@@ -47,6 +47,7 @@ func (service *Service) OPTIONS(path string, action string, handler HandlerFunc)
 	service.router.OPTIONS(path, service.handle(action, handler))
 }
 
+//nolint:forcetypeassert // we exactly know that there is a context inside the pool
 func (service *Service) handle(action string, handler HandlerFunc) httprouter.Handle {
 	if service.middleware != nil {
 		handler = service.middleware(handler)
@@ -56,13 +57,13 @@ func (service *Service) handle(action string, handler HandlerFunc) httprouter.Ha
 	dec := service.decoder
 
 	return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		c := service.pool.Get().(*context.Context)
-		c.Reset(w, r, params, enc, dec, action)
+		ctx := service.pool.Get().(*context.Context)
+		ctx.Reset(w, r, params, enc, dec, action)
 
-		if err := handler(c); err != nil {
-			service.error(err, c)
+		if err := handler(ctx); err != nil {
+			service.error(err, ctx)
 		}
 
-		service.pool.Put(c)
+		service.pool.Put(ctx)
 	}
 }

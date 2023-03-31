@@ -8,7 +8,7 @@ import (
 	"github.com/lightstar/golib/pkg/storage/redis"
 )
 
-// nolint: funlen // tests slice is too long to pass that linter
+//nolint:funlen // tests slice is too long to pass that linter
 func TestCommands(t *testing.T) {
 	type CommandTest struct {
 		SubName string

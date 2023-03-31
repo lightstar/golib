@@ -1,9 +1,9 @@
-// nolint: noctx, bodyclose // we don't care much about contexts and resource leaks in tests
+//nolint:noctx,bodyclose // we don't care much about contexts and resource leaks in tests
 package httpserver_test
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 	"time"
@@ -53,7 +53,7 @@ func TestServer(t *testing.T) {
 	resp, err := client.Get("http://127.0.0.1:9090")
 	require.NoError(t, err)
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)
 
 	require.Equal(t, "test response", string(body))

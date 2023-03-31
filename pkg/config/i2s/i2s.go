@@ -8,14 +8,14 @@ package i2s
 
 import (
 	"reflect"
-	"strings"
 	"sync"
 
 	"github.com/lightstar/golib/pkg/errors"
 )
 
 // These variables are used to support singleton pattern.
-// nolint: gochecknoglobals
+//
+//nolint:gochecknoglobals // used for singleton pattern
 var (
 	instance *Convertor
 	once     sync.Once
@@ -57,11 +57,7 @@ func (c *Convertor) Convert(data interface{}, out interface{}) error {
 		return ErrOutputNotPointer
 	}
 
-	if err := c.process(reflect.ValueOf(data), outValue.Elem()); err != nil {
-		return err
-	}
-
-	return nil
+	return c.process(reflect.ValueOf(data), outValue.Elem())
 }
 
 func (c *Convertor) process(dataValue reflect.Value, outValue reflect.Value) error {
@@ -148,7 +144,12 @@ func (c *Convertor) processMap(dataValue reflect.Value, outValue reflect.Value) 
 			mapValue = mapValue.Elem()
 		}
 
-		fieldValue := outValue.FieldByName(strings.Title(mapKey.String()))
+		mapKeyBytes := []byte(mapKey.String())
+		if len(mapKeyBytes) > 0 {
+			mapKeyBytes[0] -= 32
+		}
+
+		fieldValue := outValue.FieldByName(string(mapKeyBytes))
 		if !fieldValue.IsValid() {
 			return errors.NewFmt("unknown field '%s'", mapKey.String()).WithCause(ErrUnknownField)
 		}

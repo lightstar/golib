@@ -35,7 +35,7 @@ type Test struct {
 	testFunc  TestFunc
 }
 
-// nolint: funlen // tests slice is too long to pass that linter
+//nolint:funlen // tests slice is too long to pass that linter
 func TestService(t *testing.T) {
 	middlewareSetupFunc := func(useFunc func(httpservice.MiddlewareFunc)) SetupFunc {
 		return func(service *httpservice.Service, handler httpservice.HandlerFunc, param map[string]string) {
@@ -146,6 +146,8 @@ func TestService(t *testing.T) {
 }
 
 func testService(t *testing.T, test Test) {
+	t.Helper()
+
 	stdout := iotest.NewBuffer()
 	stderr := iotest.NewBuffer()
 	logger := log.MustNew(
@@ -193,10 +195,10 @@ func testService(t *testing.T, test Test) {
 
 	test.setupFunc(service, handler, param)
 
-	w := httptest.NewRecorder()
+	rec := httptest.NewRecorder()
 	r := httptest.NewRequest(test.method, "/test", strings.NewReader(`{"message":"OK"}`))
 
-	service.ServeHTTP(w, r)
+	service.ServeHTTP(rec, r)
 
 	status := http.StatusOK
 	if test.status != 0 {
@@ -208,8 +210,8 @@ func testService(t *testing.T, test Test) {
 		response = test.response
 	}
 
-	require.Equal(t, status, w.Code)
-	require.Equal(t, response, w.Body.String())
+	require.Equal(t, status, rec.Code)
+	require.Equal(t, response, rec.Body.String())
 	require.Regexp(t, test.stdout, stdout.String())
 	require.Regexp(t, test.stderr, stderr.String())
 

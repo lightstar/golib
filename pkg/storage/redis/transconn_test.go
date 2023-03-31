@@ -139,7 +139,7 @@ func TestTransConnSetError(t *testing.T) {
 	require.Equal(t, "redis error (set error)", err.Error())
 }
 
-// nolint: dupl // this test is very similar to TestTransConnDiscardError, but that's ok
+//nolint:dupl // this test is very similar to TestTransConnDiscardError, but that's ok
 func TestTransConnExecError(t *testing.T) {
 	helper := newTransConnHelper(t)
 	defer helper.Close(t)
@@ -164,7 +164,7 @@ func TestTransConnExecError(t *testing.T) {
 	require.Equal(t, "redis error (exec error)", reply.Error().Error())
 }
 
-// nolint: dupl // this test is very similar to TestTransConnExecError, but that's ok
+//nolint:dupl // this test is very similar to TestTransConnExecError, but that's ok
 func TestTransConnDiscardError(t *testing.T) {
 	helper := newTransConnHelper(t)
 	defer helper.Close(t)
