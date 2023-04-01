@@ -110,7 +110,7 @@ func (config *Config) GetRawByKey(key string) (interface{}, error) {
 }
 
 // Get method fills structure that 'out' parameter points to with all configuration data.
-// It will return an error if that structure doesn't have some field or it is not of an appropriate type.
+// It will return an error if that structure doesn't have some field, or it is not of an appropriate type.
 func (config *Config) Get(out interface{}) error {
 	err := config.i2s.Convert(config.data, out)
 	if err != nil {
