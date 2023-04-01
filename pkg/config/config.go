@@ -25,6 +25,7 @@ import (
 	"strings"
 
 	"github.com/lightstar/golib/pkg/config/i2s"
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 // Encoder type is a function used to convert source bytes into raw representation of configuration data.
@@ -138,4 +139,9 @@ func (config *Config) GetByKey(key string, out interface{}) error {
 	}
 
 	return nil
+}
+
+// IsNoSuchKeyError checks if provided error is 'NoSuchKey' one.
+func (config *Config) IsNoSuchKeyError(err error) bool {
+	return errors.Is(err, ErrNoSuchKey)
 }

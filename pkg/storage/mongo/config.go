@@ -2,9 +2,6 @@ package mongo
 
 import (
 	"time"
-
-	"github.com/lightstar/golib/pkg/config"
-	"github.com/lightstar/golib/pkg/errors"
 )
 
 const (
@@ -23,6 +20,12 @@ type Config struct {
 	socketTimeout  time.Duration
 }
 
+// ConfigService interface used to obtain configuration from somewhere into some specific structure.
+type ConfigService interface {
+	GetByKey(string, interface{}) error
+	IsNoSuchKeyError(error) bool
+}
+
 // Option function that is fed to NewClient and MustNewClient. Obtain them using 'With' functions down below.
 type Option func(*Config) error
 
@@ -35,7 +38,7 @@ type Option func(*Config) error
 //	    "connectTimeout": 5,
 //	    "socketTimeout": 10
 //	}
-func WithConfig(service config.Interface, key string) Option {
+func WithConfig(service ConfigService, key string) Option {
 	return func(cfg *Config) error {
 		data := struct {
 			Address        string
@@ -48,7 +51,7 @@ func WithConfig(service config.Interface, key string) Option {
 		}
 
 		err := service.GetByKey(key, &data)
-		if err != nil && !errors.Is(err, config.ErrNoSuchKey) {
+		if err != nil && !service.IsNoSuchKeyError(err) {
 			return err
 		}
 

@@ -3,8 +3,6 @@ package grpcserver
 import (
 	"google.golang.org/grpc"
 
-	"github.com/lightstar/golib/pkg/config"
-	"github.com/lightstar/golib/pkg/errors"
 	"github.com/lightstar/golib/pkg/log"
 )
 
@@ -23,6 +21,12 @@ type Config struct {
 	registerFn RegisterFn
 }
 
+// ConfigService interface used to obtain configuration from somewhere into some specific structure.
+type ConfigService interface {
+	GetByKey(string, interface{}) error
+	IsNoSuchKeyError(error) bool
+}
+
 // Option function that is fed to New and MustNew. Obtain them using 'With' functions down below.
 type Option func(*Config) error
 
@@ -37,7 +41,7 @@ type RegisterFn func(*grpc.Server)
 //	    "name": "server-name",
 //	    "address": "127.0.0.1:50051"
 //	}
-func WithConfig(service config.Interface, key string) Option {
+func WithConfig(service ConfigService, key string) Option {
 	return func(cfg *Config) error {
 		data := struct {
 			Name    string
@@ -48,7 +52,7 @@ func WithConfig(service config.Interface, key string) Option {
 		}
 
 		err := service.GetByKey(key, &data)
-		if err != nil && !errors.Is(err, config.ErrNoSuchKey) {
+		if err != nil && !service.IsNoSuchKeyError(err) {
 			return err
 		}
 

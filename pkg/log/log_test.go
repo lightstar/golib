@@ -5,7 +5,6 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/golib/pkg/config"
 	"github.com/lightstar/golib/pkg/log"
 	"github.com/lightstar/golib/pkg/test/configtest"
 	"github.com/lightstar/golib/pkg/test/iotest"
@@ -133,7 +132,7 @@ func TestConfigDefault(t *testing.T) {
 	stderr := iotest.NewBuffer()
 
 	configService := configtest.New(map[string]interface{}{
-		"key": config.ErrNoSuchKey,
+		"key": configtest.ErrNoSuchKey,
 	})
 	var logger log.Logger
 

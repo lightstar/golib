@@ -6,7 +6,6 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/lightstar/golib/pkg/config"
 	"github.com/lightstar/golib/pkg/storage/mongo"
 	"github.com/lightstar/golib/pkg/test/configtest"
 )
@@ -71,7 +70,7 @@ func TestConfigService(t *testing.T) {
 
 func TestConfigServiceDefault(t *testing.T) {
 	configService := configtest.New(map[string]interface{}{
-		"key": config.ErrNoSuchKey,
+		"key": configtest.ErrNoSuchKey,
 	})
 
 	var client *mongo.Client

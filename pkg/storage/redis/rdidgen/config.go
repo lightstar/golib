@@ -1,8 +1,6 @@
 package rdidgen
 
 import (
-	"github.com/lightstar/golib/pkg/config"
-	"github.com/lightstar/golib/pkg/errors"
 	"github.com/lightstar/golib/pkg/storage/redis"
 )
 
@@ -15,6 +13,12 @@ type Config struct {
 	keyPrefix   string
 }
 
+// ConfigService interface used to obtain configuration from somewhere into some specific structure.
+type ConfigService interface {
+	GetByKey(string, interface{}) error
+	IsNoSuchKeyError(error) bool
+}
+
 // Option function that is fed to New and MustNew. Obtain them using 'With' functions down below.
 type Option func(*Config) error
 
@@ -25,7 +29,7 @@ type Option func(*Config) error
 //	{
 //	    "keyPrefix": "user"
 //	}
-func WithConfig(service config.Interface, key string) Option {
+func WithConfig(service ConfigService, key string) Option {
 	return func(cfg *Config) error {
 		data := struct {
 			KeyPrefix string
@@ -34,7 +38,7 @@ func WithConfig(service config.Interface, key string) Option {
 		}
 
 		err := service.GetByKey(key, &data)
-		if err != nil && !errors.Is(err, config.ErrNoSuchKey) {
+		if err != nil && !service.IsNoSuchKeyError(err) {
 			return err
 		}
 

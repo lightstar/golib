@@ -3,6 +3,8 @@ package configtest
 
 import (
 	"reflect"
+
+	"github.com/lightstar/golib/pkg/errors"
 )
 
 // Config structure implementing config.Interface.
@@ -13,6 +15,11 @@ type Config struct {
 // New function creates configuration service using static predefined map of data.
 func New(data map[string]interface{}) *Config {
 	return &Config{data: data}
+}
+
+// IsNoSuchKeyError checks if provided error is 'NoSuchKey' one.
+func (config *Config) IsNoSuchKeyError(err error) bool {
+	return errors.Is(err, ErrNoSuchKey)
 }
 
 // Get method fills structure that 'out' parameter points to with predefined data under empty key.
