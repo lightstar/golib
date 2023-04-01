@@ -13,18 +13,22 @@ const (
 	DefAddress = "127.0.0.1:8080"
 	// DefName is the default server's name.
 	DefName = "http-server"
-	// ReadHeaderTimeout is maximum time in seconds to read http header.
-	ReadHeaderTimeout = 2
-	// ReadTimeout is maximum time in seconds to read request.
-	ReadTimeout = 3
-	// WriteTimeout is maximum time in seconds to write request response.
-	WriteTimeout = 5
+	// DefReadHeaderTimeout is the default maximum time in seconds to read http header.
+	DefReadHeaderTimeout = 2
+	// DefReadTimeout is the default maximum time in seconds to read request.
+	DefReadTimeout = 3
+	// DefWriteTimeout is the maximum time in seconds to write request response.
+	DefWriteTimeout = 3
 )
 
 // Config structure with server configuration. Shouldn't be created manually.
 type Config struct {
-	name    string
-	address string
+	name              string
+	address           string
+	readHeaderTimeout int64
+	readTimeout       int64
+	writeTimeout      int64
+
 	logger  log.Logger
 	handler http.Handler
 }
@@ -43,11 +47,17 @@ type Option func(*Config) error
 func WithConfig(service config.Interface, key string) Option {
 	return func(cfg *Config) error {
 		data := struct {
-			Name    string
-			Address string
+			Name              string
+			Address           string
+			ReadHeaderTimeout int64
+			ReadTimeout       int64
+			WriteTimeout      int64
 		}{
-			Name:    DefName,
-			Address: DefAddress,
+			Name:              DefName,
+			Address:           DefAddress,
+			ReadHeaderTimeout: DefReadHeaderTimeout,
+			ReadTimeout:       DefReadTimeout,
+			WriteTimeout:      DefWriteTimeout,
 		}
 
 		err := service.GetByKey(key, &data)
@@ -57,6 +67,9 @@ func WithConfig(service config.Interface, key string) Option {
 
 		cfg.name = data.Name
 		cfg.address = data.Address
+		cfg.readHeaderTimeout = data.ReadHeaderTimeout
+		cfg.readTimeout = data.ReadTimeout
+		cfg.writeTimeout = data.WriteTimeout
 
 		return nil
 	}
@@ -74,6 +87,30 @@ func WithName(name string) Option {
 func WithAddress(address string) Option {
 	return func(cfg *Config) error {
 		cfg.address = address
+		return nil
+	}
+}
+
+// WithReadHeaderTimeout option applies provided maximum time in seconds to read http header. Default: 2.
+func WithReadHeaderTimeout(readHeaderTimeout int64) Option {
+	return func(cfg *Config) error {
+		cfg.readHeaderTimeout = readHeaderTimeout
+		return nil
+	}
+}
+
+// WithReadTimeout option applies provided maximum time in seconds to read request. Default: 3.
+func WithReadTimeout(readTimeout int64) Option {
+	return func(cfg *Config) error {
+		cfg.readTimeout = readTimeout
+		return nil
+	}
+}
+
+// WithWriteTimeout option applies provided maximum time in seconds to write response. Default: 3.
+func WithWriteTimeout(writeTimeout int64) Option {
+	return func(cfg *Config) error {
+		cfg.writeTimeout = writeTimeout
 		return nil
 	}
 }
@@ -97,9 +134,12 @@ func WithHandler(handler http.Handler) Option {
 // buildConfig function builds configuration using list of provided options.
 func buildConfig(opts []Option) (*Config, error) {
 	cfg := &Config{
-		name:    DefName,
-		address: DefAddress,
-		handler: http.NotFoundHandler(),
+		name:              DefName,
+		address:           DefAddress,
+		readHeaderTimeout: DefReadHeaderTimeout,
+		readTimeout:       DefReadTimeout,
+		writeTimeout:      DefWriteTimeout,
+		handler:           http.NotFoundHandler(),
 	}
 
 	for _, opt := range opts {

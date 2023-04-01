@@ -45,9 +45,9 @@ func New(opts ...Option) (*Server, error) {
 	server := &http.Server{
 		Addr:              config.address,
 		Handler:           config.handler,
-		ReadHeaderTimeout: ReadHeaderTimeout * time.Second,
-		ReadTimeout:       ReadTimeout * time.Second,
-		WriteTimeout:      WriteTimeout * time.Second,
+		ReadHeaderTimeout: time.Duration(config.readHeaderTimeout) * time.Second,
+		ReadTimeout:       time.Duration(config.readTimeout) * time.Second,
+		WriteTimeout:      time.Duration(config.writeTimeout) * time.Second,
 	}
 
 	return &Server{
@@ -75,6 +75,21 @@ func (server *Server) Name() string {
 // Address method gets server's address that it listens to.
 func (server *Server) Address() string {
 	return server.server.Addr
+}
+
+// ReadHeaderTimeout method gets server's maximum time to read http header.
+func (server *Server) ReadHeaderTimeout() time.Duration {
+	return server.server.ReadHeaderTimeout
+}
+
+// ReadTimeout method gets server's maximum time to read request.
+func (server *Server) ReadTimeout() time.Duration {
+	return server.server.ReadTimeout
+}
+
+// WriteTimeout method gets server's maximum time to write response.
+func (server *Server) WriteTimeout() time.Duration {
+	return server.server.WriteTimeout
 }
 
 // Run method runs server listen loop. It is blocking so you probably want to run it in a separate goroutine.
