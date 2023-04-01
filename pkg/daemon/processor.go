@@ -1,6 +1,6 @@
 package daemon
 
-// Processor interface. You can assign it's implementation to daemon and it's Process method will be called at regular
+// Processor interface. You can assign its implementation to daemon, and it's Process method will be called at regular
 // intervals according to delay setting.
 type Processor interface {
 	Process()
