@@ -122,3 +122,42 @@ func TestServerWait(t *testing.T) {
 		`\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \(test-server\) stopped\n$`, stdout.String())
 	require.Empty(t, stderr.String())
 }
+
+func TestServerError(t *testing.T) {
+	stdout := iotest.NewBuffer()
+	stderr := iotest.NewBuffer()
+	logger := log.MustNew(
+		log.WithName("test-server"),
+		log.WithStdout(stdout),
+		log.WithStderr(stderr),
+	)
+
+	server := httpserver.MustNew(
+		httpserver.WithName("test-server"),
+		httpserver.WithAddress("-1:80"),
+		httpserver.WithHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})),
+		httpserver.WithLogger(logger),
+	)
+
+	require.Equal(t, "test-server", server.Name())
+	require.Equal(t, "-1:80", server.Address())
+
+	ctx, cancel := context.WithCancel(context.Background())
+	stopChan := make(chan struct{})
+
+	go func() {
+		<-time.After(15 * time.Second)
+		cancel()
+	}()
+
+	go func() {
+		server.Run(ctx)
+		close(stopChan)
+	}()
+
+	<-stopChan
+
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \(test-server\) started\n$`, stdout.String())
+	require.Regexp(t, `^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \(test-server\) listen tcp: `+
+		`lookup -1: no such host`, stderr.String())
+}
