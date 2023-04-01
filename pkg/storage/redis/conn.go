@@ -29,12 +29,12 @@ func (conn *Conn) Do(commandName string, args ...interface{}) Reply {
 
 // MultiCall method wraps calling of provided function for bulk processing. It will return unified reply of all
 // commands that were sent in this function.
-func (conn Conn) MultiCall(f MultiCallFunc) Reply {
+func (conn *Conn) MultiCall(f MultiCallFunc) Reply {
 	return multiCall(false, conn).process(f)
 }
 
 // Transaction method wraps calling of provided function for transaction processing, i.e. it will send MULTI command
 // before and EXEC command after. Then it will return unified reply of all commands that were sent.
-func (conn Conn) Transaction(f MultiCallFunc) Reply {
+func (conn *Conn) Transaction(f MultiCallFunc) Reply {
 	return multiCall(true, conn).process(f)
 }

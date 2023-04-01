@@ -14,7 +14,7 @@ type MultiCall struct {
 type MultiCallFunc func(MultiCall) error
 
 // multiCall method creates new MultiCall structure used for bulk or transaction processing.
-func multiCall(transaction bool, conn Conn) MultiCall {
+func multiCall(transaction bool, conn *Conn) MultiCall {
 	return MultiCall{
 		transaction: transaction,
 		conn:        conn.conn,
