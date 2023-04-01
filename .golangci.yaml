@@ -49,6 +49,7 @@ linters:
     - govet
     - ineffassign
     - staticcheck
+    - typecheck
     - unused
     - asasalint
     - asciicheck
