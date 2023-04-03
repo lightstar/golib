@@ -10,9 +10,9 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/lightstar/golib/api/testproto"
+	"github.com/lightstar/golib/internal/test/iotest"
 	"github.com/lightstar/golib/pkg/grpc/grpcserver"
 	"github.com/lightstar/golib/pkg/log"
-	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
 type testService struct {

@@ -6,9 +6,9 @@ import (
 	redigo "github.com/gomodule/redigo/redis"
 	"github.com/stretchr/testify/require"
 
+	"github.com/lightstar/golib/internal/test/redistest"
 	"github.com/lightstar/golib/pkg/storage/redis"
 	"github.com/lightstar/golib/pkg/storage/redis/rdidgen"
-	"github.com/lightstar/golib/pkg/test/redistest"
 )
 
 func TestIDGen(t *testing.T) {

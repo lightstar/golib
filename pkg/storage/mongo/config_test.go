@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/lightstar/golib/internal/test/configtest"
 	"github.com/lightstar/golib/pkg/storage/mongo"
-	"github.com/lightstar/golib/pkg/test/configtest"
 )
 
 func TestConfig(t *testing.T) {

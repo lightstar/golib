@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/lightstar/golib/internal/test/configtest"
+	"github.com/lightstar/golib/internal/test/iotest"
 	"github.com/lightstar/golib/pkg/log"
-	"github.com/lightstar/golib/pkg/test/configtest"
-	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
 func TestLog(t *testing.T) {

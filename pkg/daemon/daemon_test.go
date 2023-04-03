@@ -8,9 +8,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/lightstar/golib/internal/test/iotest"
 	"github.com/lightstar/golib/pkg/daemon"
 	"github.com/lightstar/golib/pkg/log"
-	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
 func TestDaemon(t *testing.T) {

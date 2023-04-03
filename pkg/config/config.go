@@ -1,14 +1,9 @@
-// Package config provides configuration service that can use different sources and encoders to fill external
-// structures with configuration data.
+// Package config provides configuration service that can use arbitrary encoders to fill external structures with
+// configuration data.
 //
-// Supported sources: file and etcd. Also other configuration service can be used as a source for a new one.
-// Supported encoders: json, yaml and toml.
+// Typical usage might be such as that:
 //
-// Source and encoder can be defined via environment variables: CONFIG_FILE, CONFIG_ETCD_ENDPOINTS, CONFIG_ETCD_KEY and
-// CONFIG_ENCODER.
-// So typical usage in most situations will be such as that:
-//
-//	cfg := config.Must(config.NewFromEnv())
+//	cfg := config.Must(config.NewFromBytes(data, encoder))
 //
 //	err = cfg.Get(&myStructure)
 //	if err != nil {
@@ -19,6 +14,16 @@
 //	if err != nil {
 //	    panic(err)
 //	}
+//
+// Argument 'data' is raw configuration bytes in some format that provided encoder can parse.
+// Argument 'encoder' can be one of predefined ones - json.Encoder, yaml.Encoder, toml.Encoder, or some custom one.
+//
+// Variable 'myStructure' is your custom structure designed to hold configuration data.
+// For example if JSON configuration data is '{"myKey":{"age":20, "name":"Peter"}}', then myStructure could be of type
+// struct { Age int, Name string }
+//
+// More likely you will use some of more specialized packages that work with specific sources of configuration data,
+// like file on disk or etcd service.
 package config
 
 import (
@@ -28,8 +33,11 @@ import (
 	"github.com/lightstar/golib/pkg/errors"
 )
 
-// Encoder type is a function used to convert source bytes into raw representation of configuration data.
-type Encoder func([]byte, *map[string]interface{}) error
+// Encoder is an object used to convert source bytes into structured representation of configuration.
+type Encoder interface {
+	Type() string
+	Encode([]byte, *map[string]interface{}) error
+}
 
 // Config structure that provides configuration service. Don't create it manually, use the functions down below instead.
 type Config struct {
@@ -38,11 +46,11 @@ type Config struct {
 }
 
 // NewFromBytes function creates new configuration service using source bytes and chosen encoder.
-// Most likely you will use one of the predefined encoders: JSONEncoder, YAMLEncoder or TOMLEncoder.
+// Most likely you will use one of the predefined encoders: json.Encoder, yaml.Encoder or toml.Encoder.
 func NewFromBytes(dataBytes []byte, encoder Encoder) (*Config, error) {
 	var data map[string]interface{}
 
-	err := encoder(dataBytes, &data)
+	err := encoder.Encode(dataBytes, &data)
 	if err != nil {
 		return nil, err
 	}

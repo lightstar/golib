@@ -7,10 +7,10 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/lightstar/golib/internal/test/iotest"
 	"github.com/lightstar/golib/pkg/http/httpservice/context"
 	"github.com/lightstar/golib/pkg/http/httpservice/middleware"
 	"github.com/lightstar/golib/pkg/log"
-	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
 func TestLog(t *testing.T) {

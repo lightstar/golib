@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 
+	"github.com/lightstar/golib/internal/test/configtest"
 	"github.com/lightstar/golib/pkg/grpc/grpcserver"
-	"github.com/lightstar/golib/pkg/test/configtest"
 )
 
 func TestConfig(t *testing.T) {

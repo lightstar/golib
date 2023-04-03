@@ -5,20 +5,22 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/lightstar/golib/internal/test/configtest"
 	"github.com/lightstar/golib/pkg/config"
+	"github.com/lightstar/golib/pkg/config/encoder/json"
 	"github.com/lightstar/golib/pkg/config/i2s"
 	"github.com/lightstar/golib/pkg/errors"
 )
 
 func TestConfig(t *testing.T) {
-	cfg, err := config.NewFromBytes(sampleConfigDataJSON, config.JSONEncoder)
+	cfg, err := config.NewFromBytes(configtest.SampleConfigDataJSON, json.Encoder)
 	require.NoError(t, err)
 
-	testSampleConfig(t, cfg, expectedSampleRawDataJSON)
+	configtest.TestSampleConfig(t, cfg, configtest.ExpectedSampleRawDataJSON)
 }
 
 func TestErrors(t *testing.T) {
-	cfg, err := config.NewFromBytes(sampleConfigDataJSON, config.JSONEncoder)
+	cfg, err := config.NewFromBytes(configtest.SampleConfigDataJSON, json.Encoder)
 	require.NoError(t, err)
 
 	_, err = cfg.GetRawByKey("unknown")
@@ -27,7 +29,7 @@ func TestErrors(t *testing.T) {
 	_, err = cfg.GetRawByKey("profile.children.unknown")
 	require.Same(t, config.ErrNoSuchKey, err)
 
-	var data sampleConfigType
+	var data configtest.SampleConfigType
 
 	err = cfg.Get(data)
 	require.Same(t, i2s.ErrOutputNotPointer, err)
@@ -41,42 +43,18 @@ func TestErrors(t *testing.T) {
 
 func TestMust(t *testing.T) {
 	require.NotPanics(t, func() {
-		_ = config.Must(config.NewFromBytes(sampleConfigDataJSON, config.JSONEncoder))
+		_ = config.Must(config.NewFromBytes(configtest.SampleConfigDataJSON, json.Encoder))
 	})
 
 	require.Panics(t, func() {
-		_ = config.Must(config.NewFromBytes(sampleConfigDataWrongJSON, config.JSONEncoder))
+		_ = config.Must(config.NewFromBytes(configtest.SampleConfigDataWrongJSON, json.Encoder))
 	})
 }
 
-//nolint:forcetypeassert // we know what is inside expectedRawData structure. if not - test will fail anyway.
-func testSampleConfig(t *testing.T, cfg *config.Config, expectedRawData map[string]interface{}) {
-	t.Helper()
-
-	require.Equal(t, expectedRawData, cfg.GetRaw())
-
-	rawDataByEmptyKey, err := cfg.GetRawByKey("")
+func TestNoSuchKey(t *testing.T) {
+	cfg, err := config.NewFromBytes(configtest.SampleConfigDataJSON, json.Encoder)
 	require.NoError(t, err)
-	require.Equal(t, interface{}(expectedRawData), rawDataByEmptyKey)
 
-	rawChildren, err := cfg.GetRawByKey("profile.children")
-	require.NoError(t, err)
-	require.Equal(t, expectedRawData["profile"].(map[string]interface{})["children"], rawChildren)
-
-	rawChildren, err = cfg.GetRawByKey(".profile.children")
-	require.NoError(t, err)
-	require.Equal(t, expectedRawData["profile"].(map[string]interface{})["children"], rawChildren)
-
-	var data sampleConfigType
-
-	require.NoError(t, cfg.Get(&data))
-	require.Equal(t, expectedSampleConfig, data)
-
-	var children []childProfile
-
-	require.NoError(t, cfg.GetByKey("profile.children", &children))
-	require.Equal(t, expectedSampleConfig.Profile.Children, children)
-
-	require.NoError(t, cfg.GetByKey(".profile.children", &children))
-	require.Equal(t, expectedSampleConfig.Profile.Children, children)
+	require.Equal(t, true, cfg.IsNoSuchKeyError(config.ErrNoSuchKey))
+	require.Equal(t, false, cfg.IsNoSuchKeyError(config.ErrNotMap))
 }

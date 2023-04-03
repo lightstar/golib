@@ -1,7 +1,7 @@
 // Package i2s provides convertor from raw data representation as map[string]interface{} into external structure
 // using reflection. It can also convert []map[string]interface{} or []interface{} into slice of structures.
 //
-// Designed to be used inside config package with data unmarshalled by json, yaml and toml encoders.
+// Designed to be used inside config package with data unmarshalled by json, yaml, toml or any other such encoders.
 //
 // It provides singleton Convertor instance that must be obtained with Instance function.
 package i2s

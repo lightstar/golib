@@ -10,9 +10,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/lightstar/golib/internal/test/iotest"
 	"github.com/lightstar/golib/pkg/http/httpserver"
 	"github.com/lightstar/golib/pkg/log"
-	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
 func TestServer(t *testing.T) {

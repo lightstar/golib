@@ -10,13 +10,13 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/lightstar/golib/internal/test/iotest"
 	"github.com/lightstar/golib/pkg/errors"
 	"github.com/lightstar/golib/pkg/http/httpservice"
 	"github.com/lightstar/golib/pkg/http/httpservice/context"
 	"github.com/lightstar/golib/pkg/http/httpservice/decoder"
 	"github.com/lightstar/golib/pkg/http/httpservice/encoder"
 	"github.com/lightstar/golib/pkg/log"
-	"github.com/lightstar/golib/pkg/test/iotest"
 )
 
 type (
