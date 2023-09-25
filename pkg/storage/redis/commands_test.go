@@ -861,29 +861,29 @@ func TestCommands(t *testing.T) {
 			},
 		},
 		{
-			Command: "SCRIPT EXISTS",
-			Args:    []interface{}{"test1", "test2"},
+			Command: "SCRIPT",
+			Args:    []interface{}{"EXISTS", "test1", "test2"},
 			Func: func(conn *redis.Conn) redis.Reply {
 				return conn.ScriptExists("test1", "test2")
 			},
 		},
 		{
-			Command: "SCRIPT FLUSH",
-			Args:    []interface{}(nil),
+			Command: "SCRIPT",
+			Args:    []interface{}{"FLUSH"},
 			Func: func(conn *redis.Conn) redis.Reply {
 				return conn.ScriptFlush()
 			},
 		},
 		{
-			Command: "SCRIPT KILL",
-			Args:    []interface{}(nil),
+			Command: "SCRIPT",
+			Args:    []interface{}{"KILL"},
 			Func: func(conn *redis.Conn) redis.Reply {
 				return conn.ScriptKill()
 			},
 		},
 		{
-			Command: "SCRIPT LOAD",
-			Args:    []interface{}{"test"},
+			Command: "SCRIPT",
+			Args:    []interface{}{"LOAD", "test"},
 			Func: func(conn *redis.Conn) redis.Reply {
 				return conn.ScriptLoad("test")
 			},

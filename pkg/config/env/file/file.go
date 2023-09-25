@@ -2,7 +2,7 @@
 // parsing it with some encoder, where file name is defined in environment variable.
 //
 // Used environment variables:
-// CONFIG_FILE - configuration file name. Default is 'configs/config.yaml'.
+// CONFIG_FILE - configuration file name. Default is 'configs/config.<encoder>'.
 //
 // Typical usage:
 //

@@ -625,20 +625,20 @@ func (conn *Conn) EvalSha(args ...interface{}) Reply {
 
 // ScriptExists method sends SCRIPT EXISTS command to the redis server and waits for the reply.
 func (conn *Conn) ScriptExists(args ...interface{}) Reply {
-	return conn.Do("SCRIPT EXISTS", args...)
+	return conn.Do("SCRIPT", append([]interface{}{"EXISTS"}, args...)...)
 }
 
 // ScriptFlush method sends SCRIPT FLUSH command to the redis server and waits for the reply.
 func (conn *Conn) ScriptFlush() Reply {
-	return conn.Do("SCRIPT FLUSH")
+	return conn.Do("SCRIPT", "FLUSH")
 }
 
 // ScriptKill method sends SCRIPT KILL command to the redis server and waits for the reply.
 func (conn *Conn) ScriptKill() Reply {
-	return conn.Do("SCRIPT KILL")
+	return conn.Do("SCRIPT", "KILL")
 }
 
 // ScriptLoad method sends SCRIPT LOAD command to the redis server and waits for the reply.
 func (conn *Conn) ScriptLoad(script string) Reply {
-	return conn.Do("SCRIPT LOAD", script)
+	return conn.Do("SCRIPT", "LOAD", script)
 }

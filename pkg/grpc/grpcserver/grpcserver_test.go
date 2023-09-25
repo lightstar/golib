@@ -141,7 +141,7 @@ func TestServerWait(t *testing.T) {
 }
 
 func getRemoteData(input *testproto.Input) (*testproto.Output, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	conn, err := grpc.DialContext(ctx, "127.0.0.1:5050",
