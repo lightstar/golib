@@ -13,7 +13,7 @@ func TestSessionWithContext(t *testing.T) {
 
 	ctx := context.Background()
 	helper.session.WithContext(ctx)
-	require.Same(t, ctx, helper.session.Context())
+	require.Equal(t, ctx, helper.session.Context())
 }
 
 func TestSessionWithDatabase(t *testing.T) {
