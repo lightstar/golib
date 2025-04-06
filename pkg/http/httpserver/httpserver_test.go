@@ -90,7 +90,6 @@ func TestServerWait(t *testing.T) {
 		httpserver.WithHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			close(handlerEnteredChan)
 			time.Sleep(time.Second)
-
 			handlerFinished = true
 		})),
 		httpserver.WithLogger(logger),

@@ -14,7 +14,6 @@ package file
 
 import (
 	"os"
-	"path/filepath"
 
 	"github.com/lightstar/golib/pkg/config"
 	"github.com/lightstar/golib/pkg/errors"
@@ -23,7 +22,7 @@ import (
 // NewConfig function creates new configuration service using data in some file as a source and chosen encoder.
 // Most likely you will use one of the predefined encoders: json.Encoder, yaml.Encoder or toml.Encoder.
 func NewConfig(name string, encoder config.Encoder) (*config.Config, error) {
-	dataBytes, err := os.ReadFile(filepath.Clean(name))
+	dataBytes, err := os.ReadFile(name)
 	if err != nil {
 		return nil, errors.NewFmt("can't read from file '%s' (%s)", name, err.Error()).WithCause(err)
 	}

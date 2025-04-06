@@ -51,7 +51,6 @@ linters:
     - nestif
     - nilerr
     - nilnil
-    - nlreturn
     - noctx
     - nolintlint
     - nonamedreturns
@@ -74,7 +73,6 @@ linters:
     - varnamelen
     - wastedassign
     - whitespace
-    - wsl
   settings:
     govet:
       enable:
@@ -95,10 +93,11 @@ linters:
       min-occurrences: 2
     gocyclo:
       min-complexity: 10
+    gosec:
+      excludes:
+        - G304
     misspell:
       locale: US
-    nlreturn:
-      block-size: 3
     nolintlint:
       require-explanation: true
       require-specific: true
@@ -120,6 +119,3 @@ linters:
         - w http.ResponseWriter
         - r *http.Request
         - ok bool
-    wsl:
-      allow-assign-and-anything: true
-      allow-cuddle-declarations: true

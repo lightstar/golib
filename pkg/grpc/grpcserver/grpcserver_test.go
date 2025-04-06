@@ -153,6 +153,5 @@ func getRemoteData(input *testproto.Input) (*testproto.Output, error) {
 	defer cancel()
 
 	client := testproto.NewTestClient(conn)
-
 	return client.GetData(ctx, input)
 }

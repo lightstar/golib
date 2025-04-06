@@ -132,7 +132,6 @@ func TestResponse(t *testing.T) {
 					encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
 						w.WriteHeader(status)
 						_, err := fmt.Fprintf(w, "%s", data)
-
 						return err
 					}), nil, "")
 
