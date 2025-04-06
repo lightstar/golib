@@ -63,6 +63,8 @@ func TestServer(t *testing.T) {
 		close(stopChan)
 	}()
 
+	time.Sleep(time.Second)
+
 	data, err := getRemoteData(&testproto.Input{A: 5})
 	require.NoError(t, err)
 
@@ -141,14 +143,14 @@ func TestServerWait(t *testing.T) {
 }
 
 func getRemoteData(input *testproto.Input) (*testproto.Output, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	conn, err := grpc.DialContext(ctx, "127.0.0.1:5050",
-		grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	conn, err := grpc.NewClient("127.0.0.1:5050",
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
 	client := testproto.NewTestClient(conn)
 

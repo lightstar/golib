@@ -157,7 +157,8 @@ func testService(t *testing.T, test Test) {
 
 	enc := encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
 		w.WriteHeader(status)
-		_, err := w.Write([]byte(fmt.Sprintf("%s", data)))
+		_, err := fmt.Fprintf(w, "%s", data)
+
 		return err
 	})
 

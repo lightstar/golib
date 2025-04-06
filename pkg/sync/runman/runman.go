@@ -54,6 +54,7 @@ func (m *Manager) Run(ctx context.Context) {
 
 	for countDone < len(m.runners) {
 		<-stateChan
+
 		countDone++
 	}
 }

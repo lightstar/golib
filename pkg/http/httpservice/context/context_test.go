@@ -27,7 +27,8 @@ func TestContext(t *testing.T) {
 
 	ctx.Reset(rec, req, params, encoder.Func(func(w http.ResponseWriter, status int, data interface{}) error {
 		w.WriteHeader(status)
-		_, err := w.Write([]byte(fmt.Sprintf("%s", data)))
+		_, err := fmt.Fprintf(w, "%s", data)
+
 		return err
 	}), decoder.Func(func(r *http.Request, data interface{}) error {
 		return json.NewDecoder(r.Body).Decode(data)

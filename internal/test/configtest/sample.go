@@ -108,7 +108,7 @@ name = Peter
 
 // ExpectedSampleConfig variable contains expected result of configuration parsing.
 //
-//nolint:gochecknoglobals,gomnd // it's ok for sample test data to be global and use raw numbers.
+//nolint:gochecknoglobals // it's ok for sample test data to be global and use raw numbers.
 var ExpectedSampleConfig = SampleConfigType{
 	Name: "Peter",
 	Profile: UserProfile{
@@ -124,7 +124,7 @@ var ExpectedSampleConfig = SampleConfigType{
 
 // ExpectedSampleRawDataJSON variable contains expected raw result of configuration parsing by JSON encoder.
 //
-//nolint:gochecknoglobals,gomnd // it's ok for sample test data to be global and use raw numbers.
+//nolint:gochecknoglobals // it's ok for sample test data to be global and use raw numbers.
 var ExpectedSampleRawDataJSON = map[string]interface{}{
 	"name": "Peter",
 	"profile": map[string]interface{}{
@@ -140,7 +140,7 @@ var ExpectedSampleRawDataJSON = map[string]interface{}{
 
 // ExpectedSampleRawDataYAML variable contains expected raw result of configuration parsing by YAML encoder.
 //
-//nolint:gochecknoglobals,gomnd // it's ok for sample test data to be global and use raw numbers.
+//nolint:gochecknoglobals // it's ok for sample test data to be global and use raw numbers.
 var ExpectedSampleRawDataYAML = map[string]interface{}{
 	"name": "Peter",
 	"profile": map[string]interface{}{
@@ -156,7 +156,7 @@ var ExpectedSampleRawDataYAML = map[string]interface{}{
 
 // ExpectedSampleRawDataTOML variable contains expected raw result of configuration parsing by TOML encoder.
 //
-//nolint:gochecknoglobals,gomnd // it's ok for sample test data to be global and use raw numbers.
+//nolint:gochecknoglobals // it's ok for sample test data to be global and use raw numbers.
 var ExpectedSampleRawDataTOML = map[string]interface{}{
 	"name": "Peter",
 	"profile": map[string]interface{}{

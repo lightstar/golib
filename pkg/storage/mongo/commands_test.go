@@ -76,7 +76,7 @@ func TestUpdateOneError(t *testing.T) {
 	_, err := helper.session.UpdateOne(nil, nil)
 
 	require.Error(t, err)
-	require.Regexp(t, `^mongo error \(cannot transform type mongo.Data to a BSON Document`, err.Error())
+	require.Regexp(t, `^mongo error \(cannot marshal type mongo.Data to a BSON Document`, err.Error())
 }
 
 func TestUpsertOneUpdated(t *testing.T) {
@@ -131,7 +131,7 @@ func TestUpsertOneError(t *testing.T) {
 	_, err := helper.session.UpsertOne(nil, nil)
 
 	require.Error(t, err)
-	require.Regexp(t, `^mongo error \(cannot transform type mongo.Data to a BSON Document`, err.Error())
+	require.Regexp(t, `^mongo error \(cannot marshal type mongo.Data to a BSON Document`, err.Error())
 }
 
 func TestDeleteOne(t *testing.T) {
@@ -164,7 +164,7 @@ func TestDeleteOneError(t *testing.T) {
 	_, err := helper.session.DeleteOne(nil)
 
 	require.Error(t, err)
-	require.Regexp(t, `^mongo error \(cannot transform type mongo.Data to a BSON Document`, err.Error())
+	require.Regexp(t, `^mongo error \(cannot marshal type mongo.Data to a BSON Document`, err.Error())
 }
 
 func TestCount(t *testing.T) {
@@ -192,7 +192,7 @@ func TestCountError(t *testing.T) {
 	_, err := helper.session.Count(nil)
 
 	require.Error(t, err)
-	require.Regexp(t, `^mongo error \(cannot transform type mongo.Data to a BSON Document`, err.Error())
+	require.Regexp(t, `^mongo error \(cannot marshal type mongo.Data to a BSON Document`, err.Error())
 }
 
 func TestFindOne(t *testing.T) {
@@ -229,7 +229,7 @@ func TestFindOneError(t *testing.T) {
 	_, err := helper.session.FindOne(nil, &data)
 
 	require.Error(t, err)
-	require.Regexp(t, `^mongo error \(cannot transform type mongo.Data to a BSON Document`, err.Error())
+	require.Regexp(t, `^mongo error \(cannot marshal type mongo.Data to a BSON Document`, err.Error())
 }
 
 func TestCountAll(t *testing.T) {
@@ -311,7 +311,7 @@ func TestFindError(t *testing.T) {
 	_, err := helper.session.Find(nil, &dataSlice)
 
 	require.Error(t, err)
-	require.Regexp(t, `^mongo error \(cannot transform type mongo.Data to a BSON Document`, err.Error())
+	require.Regexp(t, `^mongo error \(cannot marshal type mongo.Data to a BSON Document`, err.Error())
 }
 
 func TestFindEntitiesError(t *testing.T) {
@@ -356,7 +356,7 @@ func TestUpdateManyError(t *testing.T) {
 	_, err := helper.session.UpdateMany(nil, nil)
 
 	require.Error(t, err)
-	require.Regexp(t, `^mongo error \(cannot transform type mongo.Data to a BSON Document`, err.Error())
+	require.Regexp(t, `^mongo error \(cannot marshal type mongo.Data to a BSON Document`, err.Error())
 }
 
 func TestUpsertManyUpdated(t *testing.T) {
@@ -417,7 +417,7 @@ func TestUpsertManyError(t *testing.T) {
 	_, err := helper.session.UpsertMany(nil, nil)
 
 	require.Error(t, err)
-	require.Regexp(t, `^mongo error \(cannot transform type mongo.Data to a BSON Document`, err.Error())
+	require.Regexp(t, `^mongo error \(cannot marshal type mongo.Data to a BSON Document`, err.Error())
 }
 
 func TestDeleteMany(t *testing.T) {
@@ -452,5 +452,5 @@ func TestDeleteManyError(t *testing.T) {
 	_, err := helper.session.DeleteMany(nil)
 
 	require.Error(t, err)
-	require.Regexp(t, `^mongo error \(cannot transform type mongo.Data to a BSON Document`, err.Error())
+	require.Regexp(t, `^mongo error \(cannot marshal type mongo.Data to a BSON Document`, err.Error())
 }
